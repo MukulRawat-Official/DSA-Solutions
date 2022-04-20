@@ -1,0 +1,63 @@
+// Store all digits in array or vector now recurr for each digit fix that digit and move to next new digits
+/*
+   eg = "23" - for 2 (a,b,c)- ('a' + all 3 combination(d ,e , f)) + ('b' + same)  + ('c' + same)
+*/
+class Solution {
+public:
+    vector<string>ans;
+    vector<string>no;
+    
+    void recurr(string digits,string formed, int i , int n)
+    {
+       if(i==n)
+       {
+           ans.push_back(formed);
+           return;
+       }
+       
+       for(auto& x : no[digits[i] - '2'])
+       {
+           
+           recurr(digits,formed + x,i+1,n);
+       }
+          
+           
+    }
+    
+    vector<string> letterCombinations(string digits) {
+      
+        int n = digits.length();
+        
+        if(n==0)
+            return ans;
+        
+        char ch = 'a';
+        for(int i=2;i<=9;i++)
+        {
+            int x = 3;
+            
+            if(i == 7 || i == 9)
+                x++;
+            
+            string temp = "";           
+            while(x--)
+            {
+               temp+=ch;
+               ch++;
+            }
+            
+            no.push_back(temp);
+        }
+        
+        
+        
+        for(auto& i: no)
+            cout<<i<<" ";
+        
+        
+        
+        recurr(digits,"",0,n);
+        
+        return ans;
+    }
+};
