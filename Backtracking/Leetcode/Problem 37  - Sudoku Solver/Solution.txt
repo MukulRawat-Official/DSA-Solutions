@@ -1,0 +1,85 @@
+/*
+
+  We solve sudoku in increasing column length by one if we reach end of column we reset column to 0 and increase row by one .. 
+  If we reach end of row our sudoku is solved ...
+  First we move to an unfilled space and then put that no and move for next index
+  it our next index dont give answer we back track remove no we filled and try another no
+  
+*/
+
+class Solution {
+public:
+   
+    bool isSafe(vector<vector<char>>&b , int r , int  c ,char no)
+    {
+        
+        for(int i = 0;i<9;i++)
+        {
+              if(b[i][c] == no)
+                  return false;
+              
+        }
+                    
+        
+        for(int i = 0;i<9;i++)
+        {
+              if(b[r][i]  == no)
+              return false;
+        }
+                    
+    
+                    
+        int x =r/3 *3  , y = c/3  * 3;
+                    
+        for(int i =  x;i<x+3;i++)
+        for(int j = y ; j<y+3;j++)
+              {
+                 if(b[i][j] == no)
+                     return false;
+              }
+            
+              
+                 return true;
+                    
+    }
+    
+    
+   bool  solve(vector<vector<char>>&b , int i , int  j)
+    {
+         if(i == 9)  // sudoku solved
+         return true;
+         
+         if(j == 9)  // end of column so reset column and increase row by one
+        return solve(b,i+1,0);
+       
+     
+        
+       
+        
+        if(b[i][j]!= '.')  // skip non empty columns
+           return solve(b,i,j+1);
+        
+        
+        for(char c='1';c<='9';c++)  // try all  characters
+        {
+          
+             char no  = c;
+            
+            if(isSafe(b ,i,j, no)) // if c is valid we add in sudoku 
+            {
+                b[i][j] = no;
+                if(solve(b,i,j+1))  // if filling c doesn't give answer
+                    return true; 
+                b[i][j]='.'; // then we backtrack removing character c and then changing it to next element
+            }
+            
+        }
+       
+       return false;
+            
+    }
+    void solveSudoku(vector<vector<char>>& board) {
+        bool ans = solve(board,0,0);
+        cout<<ans<<endl;
+    }
+};
