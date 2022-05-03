@@ -1,0 +1,68 @@
+/--- Top to bottom approach --- /
+
+class Solution {
+public:
+    int a , b;
+    int recurr(int x,int y,vector<vector<int>>& dp)
+    {
+          if(x == a && y == b) // end part
+          return 1;
+        
+         if(x > a || y > b)  // out of border
+             return 0;
+          
+          if(dp[x][y] != -1)  // value encountered at first 
+              return dp[x][y];
+          
+          dp[x][y] = recurr(x+1,y,dp) + recurr(x,y+1,dp);  // current value will be sum of previous 2
+        
+        return dp[x][y];
+           
+         
+    }
+
+    int uniquePaths(int m, int n) {
+        
+        a = m-1;
+        b = n-1;
+        
+        vector<vector<int>>dp;
+        
+        for(int i=0;i<m;i++)
+        {
+            vector<int>temp(n,-1);
+            dp.push_back(temp);
+        }
+        
+       return   recurr(0,0,dp);
+      
+    }
+};
+
+
+/--- Bottom to top ---- /
+
+
+class Solution {
+public:
+
+    int uniquePaths(int m, int n) {
+        
+        int dp[m][n];
+        
+        for(int i=0;i<n;i++)
+            dp[0][i] = 1; // base case as while only moving down or right only one path will be considered
+        
+        for(int i=0;i<m;i++)
+            dp[i][0]=1;
+        
+        for(int i=1;i<m;i++)
+        {
+            for(int j=1;j<n;j++)
+            dp[i][j] = dp[i-1][j] + dp[i][j-1];  // including path of bottom and left as they contribut to total value
+            
+        }
+        
+        return dp[m-1][n-1];
+    }
+};
