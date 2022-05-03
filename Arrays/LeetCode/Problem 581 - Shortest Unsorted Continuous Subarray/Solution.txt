@@ -1,0 +1,29 @@
+/*
+  logic - we need to check how much array is sorted from ends since if it is not sorted then we need to include that part;
+  after we find portion from where array is unsorted( by comparing it with sorted array ) return size of this portion 
+*/
+
+class Solution {
+public:
+    int findUnsortedSubarray(vector<int>& nums) {
+        
+        vector<int>temp  = nums;
+        
+        sort(nums.begin(),nums.end());
+        
+        int i=0 , j = nums.size()-1;
+        
+        while(i<=j && nums[i] == temp[i])
+            i++;
+        
+        while(j>=i && nums[j] == temp[j])
+            j--;
+        
+        if(i>j)
+            return 0;
+        
+        else
+            return j - i + 1;
+        
+    }
+};
