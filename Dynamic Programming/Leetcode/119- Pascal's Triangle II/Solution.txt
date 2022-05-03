@@ -1,0 +1,28 @@
+class Solution {
+public:
+    vector<int> getRow(int r) {
+        
+        vector<int>ans(1,1);
+        
+        if(r == 0)
+            return ans;
+        
+        int  n = 1;
+        
+        for( ;n<=r;n++)
+        {
+            vector<int>curr(1,1);
+            
+            for(int j=1;j<ans.size();j++)
+                curr.push_back(ans[j] + ans[j-1]);
+            
+            curr.push_back(1);
+            ans = curr;
+            
+        }
+        
+        return ans;
+        
+        
+    }
+};
