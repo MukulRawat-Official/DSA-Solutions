@@ -1,0 +1,66 @@
+//*
+  Logic  - from transition of sqare of length 1 to length 2 we check (x+1 , y + 1 ) , (x+1 , y) , (x,y+1) we check all thest sqares if all they are one including intial 
+  square then sqare of length 2 can be formed .
+  
+  if(dp[i][j] == 0)
+  then we just put zero there because no sqare can be formed from it 
+  
+  else
+  for we traverse every element and check its previous three element element and add one to it
+  
+  After that we check for every element which can posssees max value and return it..
+*/
+class Solution {
+public:
+    int min(int a , int b ,int c)
+    {
+        if(a<b)
+        {
+            if(a<c)
+                return a;
+            return c;
+        }
+        
+        else
+        {
+            if(b<c)
+                return b;
+            return c;
+        }
+    }
+    int maximalSquare(vector<vector<char>>& matrix) {
+        
+        int m = matrix.size();
+        int n = matrix[0].size();
+        
+        int dp [m][n];
+        
+        for(int i =0 ;i <m ; i++)
+        dp[i][0] = matrix[i][0] - '0';
+        
+        for(int i=0;i<n;i++)
+        dp[0][i] = matrix[0][i] - '0';
+        
+        for(int i = 1;i<m;i++)
+        {
+          for(int j=1;j<n;j++)
+          {
+              if( matrix[i][j] == '0')
+                  dp[i][j] = 0;
+              
+              else
+              dp[i][j] = min(dp[i-1][j-1] , dp[i-1][j] , dp[i][j-1]) + 1 ;
+           }
+        }
+        
+        int curr = 0;
+        
+        for(int i=0;i<m;i++)
+           for(int j=0;j<n;j++)
+            curr = max(curr, dp[i][j] );
+           
+        
+        return (curr * curr);
+        
+    }
+};
