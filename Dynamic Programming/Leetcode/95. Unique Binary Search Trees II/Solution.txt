@@ -1,0 +1,53 @@
+/* 
+     we'll take each node one by one and divide other nodes in two parts 
+     
+     for eg for  ; n = 3 -> 1 , 2 , 3 ;
+     
+    FOR 1 ->>   (NULL) - 1(root) - {2 , 3}  ::->   { 2 , 3} form   NULL - 2(right root)- 3  ,  2 - 3(right root) - NULL 
+       we'll save this 2 formation formed my  2,3 
+       
+       and each combiantion will be vaild for each pair combination formed from fixing one left element and all right element 
+       ans doing this for all combination formed by left and right
+       
+       similary we'll do for 2  .. 3
+*/
+
+typedef TreeNode node;
+class Solution {
+public:
+    
+    vector<node*>  recurr(int s , int n)
+    {
+         if(s>n)
+         return {NULL};
+        
+         vector<node*>ans;
+        
+             
+         for(int i=s;i<=n;i++)
+         {
+             vector<node*>left = recurr(s,i-1);
+             vector<node*>right = recurr(i+1,n);
+             
+             
+             for(auto &x:left)
+                 for(auto &j :right){
+             node* root = new node(i);
+                  
+                     root->left = x;
+                     root->right = j;
+                     
+                     ans.push_back(root);
+                     
+                 }
+         }
+        
+        return ans;
+    }
+    vector<TreeNode*> generateTrees(int n) {
+     
+      
+      return recurr(1,n);
+       
+    }
+};
