@@ -1,0 +1,61 @@
+/*
+ Inorder traversal gives sorted order we can get two defaulters then 
+ 
+ for o(1) space
+ 
+ eg: 1 2 5 4 3 
+ 
+     / / \ \   we can see two downard pattern these will be deafaulters we can find from here who will be defaulters
+     
+     1 2 4 3 5
+     / / \ /   when we get two defaulters adjacents values are swapped 
+ 
+*/
+
+typedef TreeNode node;
+class Solution {
+public:
+    node* one , *two,*prev;
+    bool first;
+    
+    
+    void inorder(node* head)
+    {
+      if(first && head->left == NULL)
+      {prev = head; first = false;}
+      
+      if(head == NULL)
+      return;
+        
+        inorder(head->left);
+        
+        if(prev->val > head->val)
+        {
+            if(one == NULL)
+            {
+                one = prev;
+                two = head;
+            }
+            
+            else
+            two =head;
+        }
+        
+        prev = head;
+        inorder(head->right);
+    }
+    
+    
+    
+    void recoverTree(TreeNode* head) {
+      
+        one = NULL;
+        two = NULL;
+        first = true;
+        inorder(head);
+        
+      
+        
+        swap(one->val,two->val);
+        }
+};
