@@ -1,0 +1,78 @@
+/*
+
+ rem -> 0 ,1 knapset problem is very imp  
+ this problem is one type of 0,1 knapset problem in 3d model
+ 
+ here we can add one string if remaining no of zero and one we have is equal or larger than required by string itself
+ 
+ 
+ if(req one <= rem one && req zero <= rem zero)
+ curr ans = max(this index taken  + 1 , this index not taken ); // for index taken we reduce value of curr one and zero
+ 
+ else
+ curr ans = previous ans;
+ 
+ we move from index (n-1  ------> 0)
+ we can move from index 0 ---> n-1 in recursion but in dp we have to fill table in bottom up manner
+ so we move from n-1 ----> 0 index like in knapset problem
+ 
+ *** IMP ---> base case like  having (zero  0 && 1 greater than zero)  or  (zero 1 &&  0 greater than 1 ) will also count so loop of 
+ zero and one will start from zero..
+*/
+
+class Solution {
+public:
+    
+    void count(string& str , int&x , int& y)
+    {
+        for(auto & i :str)
+        {
+            if(i == '0')
+                x++;
+            
+            else
+                y++;
+        }
+    }
+    
+    int findMaxForm(vector<string>& strs, int z, int o) {
+      int n = strs.size();
+      
+    vector<vector<vector<int>>>dp;
+        
+    for(int i=0;i<=n;i++)
+    {
+        vector<vector<int>>temp(z+1,vector<int>(o+1 , 0));
+        dp.push_back(temp);
+    }
+    
+
+    for(int i=1;i<=n;i++)
+    {
+         int x = 0 , y = 0; 
+         count(strs[i-1],x,y);
+        
+         for(int j=0;j<=z;j++)
+         {
+             for(int k =0; k<=o;k++)
+             {
+                 if(x<= j && y<=k)
+                 dp[i][j][k] = max(dp[i-1][j-x][k-y] + 1,dp[i-1][j][k]);
+                 
+                 else
+                 dp[i][j][k] = dp[i-1][j][k];
+             }
+         }
+    }
+        
+        int ans = 0;
+     
+    for(auto &i : dp)
+        for(auto &j : i)
+            for(auto &k : j)
+                ans = max(ans,k);
+          
+        
+      return ans;
+    }
+};
