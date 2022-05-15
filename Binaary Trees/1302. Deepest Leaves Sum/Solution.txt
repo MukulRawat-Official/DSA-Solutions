@@ -1,0 +1,38 @@
+/*
+
+add level marker with tree 
+
+if new level is observed make sum  = curr element;
+if new level is == max_level add its value to sum
+
+*/
+typedef TreeNode node;
+class Solution {
+public:
+    int sum , max_level;
+    void recurr(node* root , int level)
+    {
+        if(root == NULL)
+            return;
+        
+        if(level == max_level)
+        sum+= root->val;
+        
+        if(level > max_level)
+        {
+            sum = root->val;
+            max_level = level;
+            
+          
+        }
+        
+        recurr(root->left,level + 1);
+        recurr(root->right, level + 1);
+    }
+    int deepestLeavesSum(TreeNode* root) {
+        sum = 0;
+        max_level = 0;
+        recurr(root, 0);
+        return sum;
+    }
+};
