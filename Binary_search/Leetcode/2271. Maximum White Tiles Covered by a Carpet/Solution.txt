@@ -1,0 +1,114 @@
+
+/*
+   as  tiles as non overlapping sort the vector first in ascending order
+   
+   run a loop for ( i = 0  , N-1)
+   
+   we can provide a range that can be covered maximum by tiles  = starting range + total tiles needed - 1
+   
+   find this range no in array :
+   
+   we can have two condition 
+   
+   range is between two tiles 
+   range is outside of two tiles;
+   
+   
+   if(range exactly cover all certrain tiles)
+   
+   curr  ans = prefix sum of curr i  to  given tile
+   
+   if( range partiall cover then )
+   
+   curr ans = prefix  sum of curr i to index of (current tile - 1) and area covered in current tile
+   
+   if(current tile reaches end)
+
+   curr ans = prefix sum of i  to n -1 ;
+   
+   ans will be max of all possible above;
+*/
+
+class Solution {
+public:
+    int psum(vector<int>&arr,int i ,int j)
+    {
+        if(i == 0)
+            return arr[j];
+        
+        return arr[j]- arr[i-1];
+    }
+    
+    int maximumWhiteTiles(vector<vector<int>>& arr, int c) {
+        
+        
+         int ans = 0;
+        int n = arr.size();
+        vector<int>prefix(n,0);
+        
+        sort(arr.begin(),arr.end());
+        
+        prefix[0]= arr[0][1] - arr[0][0] + 1;
+        
+        for(int i=1;i<n;i++)
+        prefix[i] = prefix[i-1] + arr[i][1] - arr[i][0] + 1;
+        
+        
+        
+        for(int i = 0;i<n;i++)
+        { 
+            int low = i , high = n-1;
+            
+            int target = arr[low][0] + c - 1; // tiles covered from index i;
+            
+            
+            while(low<=high)
+            {
+                int mid = low + (high - low)/2;
+                
+                if(arr[mid][0] > target)
+                    high = mid-1;
+                
+                else if(arr[mid][1] < target)
+                    low = mid+1;
+                
+                else
+                {
+                    low = mid;
+                    break;
+                }
+            }
+            
+             // cout<<low<<" ";
+            
+            
+            if(low == n)
+            ans = max(ans , psum(prefix , i , n-1));
+            
+            else
+            {
+                if(arr[low][1] == target)
+                ans =  max(ans ,psum(prefix , i,low));
+                
+                else
+                {
+                    if(low == 0)
+                        ans = max(ans , target);
+                    
+                    else
+                       ans = max(ans , psum(prefix, i , low - 1) + max(0,target - arr[low][0] + 1));
+                }
+            }
+            
+            // cout<<ans<<" ";/
+          
+        
+        }
+        
+        // cout<<endl;
+        
+        return ans;
+    }
+              
+        
+};
