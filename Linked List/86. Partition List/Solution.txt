@@ -1,0 +1,74 @@
+/*
+  Problem is quite easy just maintain two seperate list for small and greater values and merge them
+  check for corner cases which might give wrong answer  
+*/
+
+typedef ListNode node;
+class Solution {
+public:
+    ListNode* partition(ListNode* head, int x) {
+        
+        if(head == NULL)
+            return NULL;
+        
+        node* s = NULL, *s_tail = NULL, *h = NULL , *h_tail = NULL;
+        
+        node* temp = head;
+        
+        while(temp)
+        {
+
+            if(temp->val < x)
+            {
+               if(s == NULL)
+               {
+                   s = temp;
+                   s_tail = s;
+               }
+                
+               else
+               {
+                   s_tail->next = temp;
+                   s_tail = s_tail->next;
+               }
+            }
+            
+            
+            else
+            {
+                  if(h == NULL)
+               {
+                   h = temp;
+                   h_tail = h;
+               }
+                
+               else
+               {
+                   h_tail->next = temp;
+                   h_tail = h_tail->next;
+               }
+            }
+            
+            temp = temp->next;
+            
+        }
+        
+        if(s_tail == NULL)
+        { h_tail->next = NULL;
+            return h;
+        }
+        
+        if(h_tail == NULL)
+        {
+            s_tail->next = NULL;
+            return s;
+        }
+        
+        s_tail->next = h;
+        h_tail->next = NULL;
+        
+        return s;
+        
+        
+    }
+};
