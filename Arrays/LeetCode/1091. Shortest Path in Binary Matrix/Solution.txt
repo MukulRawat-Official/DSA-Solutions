@@ -1,0 +1,90 @@
+/*
+  1.> why can't we use dp 
+  -> as it is not necessaary previous ans is dependend on next answer for eq we run first downward than upawrd which will give wrong answer in dp
+  
+  2.> BFS and DFS algorithms can be applied here
+  -> since DFS algorithm is costly we can use BFS (Below solution is using bfs)
+  
+  3.> Each node we need to visit once only (all nodes will be in increasing in level)
+  
+  push 0,0 node in queue
+  
+  4.> now move all next movabble codition in queue and remove parent node
+  5.> do this while we didn't reach end or queue is empty 
+  
+  */
+class Solution {
+public:
+    int shortestPathBinaryMatrix(vector<vector<int>>& grid) {
+        
+        int n = grid.size();
+        
+        if(grid[n-1][n-1] == 1 || grid[0][0] == 1)
+            return -1;
+        
+        int dp[n][n];
+        
+        for(int i=0;i<n;i++)
+        for(int j=0;j<n;j++)
+        {
+            if(grid[i][j])
+                dp[i][j] = -1;
+            
+            else
+                dp[i][j] = 0;
+        }
+        
+        dp[0][0]=1;
+        
+        queue<pair<int,int>>q;
+        
+        pair<int,int>temp;
+        
+        temp = make_pair(0,0);
+        q.push(temp);
+        
+        while(q.size())
+        {
+            temp = q.front();
+            int x = temp.first , y = temp.second;
+            q.pop();
+            
+            for(int i=-1;i<=1;i++)
+                for(int j=-1;j<=1;j++)
+                {
+                       if(i == 0 &&  j == 0)
+                           continue;
+                    
+                       if(x+i>=0 && y+j>=0 && x+i<n && y+j<n )
+                       {
+                           if(dp[x+i][y+j] == -1)
+                               continue;
+                           
+                           else if(dp[x+i][y+j] == 0)
+                           {
+                               dp[x+i][y+j] = dp[x][y] + 1;
+                               q.push({x+i,y+j});
+                           }
+                      }
+                }
+            
+            if(dp[n-1][n-1])
+                break;
+        }
+        
+        
+        
+    //     for(auto& i : dp)
+    //     {       for(auto&j : i)
+    //         {
+    //               cout<<j<<" ";
+    //         }cout<<endl;
+    // }
+        
+        if(dp[n-1][n-1])
+        return dp[n-1][n-1];
+        
+        return -1;
+            
+    }
+};
