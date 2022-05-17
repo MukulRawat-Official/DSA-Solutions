@@ -1,0 +1,29 @@
+/*
+ DO ANY TRAVERSAL FOR BOTH NODES AT SAME TIME
+ IF->WE REACH TARGET
+ UPDATE ANS
+*/
+typedef TreeNode node;
+class Solution {
+public:
+
+    node* ans;
+    void recurr(node* o , node* c, node *t)
+    {
+      if(o == NULL || ans)
+      return;
+      
+      if(o == t)
+      ans = c;
+     
+     recurr(o->left,c->left,t);
+     recurr(o->right,c->right,t);
+    }
+    
+    
+    TreeNode* getTargetCopy(TreeNode* original, TreeNode* cloned, TreeNode* target) {
+        ans = NULL;
+        recurr(original,cloned,target);
+        return ans;
+    }
+};
