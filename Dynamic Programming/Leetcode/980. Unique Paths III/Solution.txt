@@ -1,0 +1,78 @@
+/*
+
+dfs based solution + backtracking -> 
+
+1 -> start , 2-> end , -1 -> wall, 0 -> empty
+
+1.> create a spaces var to calculate all steps need to cover for all blocks
+2.> as we move through a block mark it as -1 and reduces spaces by 1
+3.> backtrack and end and mark block as zero
+4.> return sum
+
+*/
+class Solution {
+public:
+     int n , m ;
+    
+    bool isSafe(vector<vector<int>>& grid , int i , int j )
+    {
+        
+        if(i<0 || j<0 || i == n || j == m || grid[i][j] == -1 || grid[i][j] == 1 )
+            return false;
+        
+        return true;
+    }
+    
+    int recurr(vector<vector<int>>& grid , int i , int j , int spaces )
+    {
+       
+        if(grid[i][j] == 2)
+        {
+            if(spaces)
+                return 0;
+            
+            return 1;
+        }
+        
+        int sum = 0;
+        
+          grid[i][j] = -1;
+        
+        if(isSafe(grid,i,j+1))
+            sum += recurr(grid,i,j+1,spaces-1);
+              
+        if(isSafe(grid,i+1,j))
+            sum += recurr(grid,i+1,j,spaces-1);
+             
+        
+        if(isSafe(grid,i,j-1))
+            sum += recurr(grid,i,j-1,spaces-1);
+             
+        
+        if(isSafe(grid,i-1,j))
+            sum += recurr(grid,i-1,j,spaces-1);
+        
+        grid[i][j] = 0;
+        
+        return sum;
+    }
+  
+    int uniquePathsIII(vector<vector<int>>& grid) {
+          n = grid.size();
+         m = grid[0].size();
+        int spaces = 1;
+        int x,y;
+        
+        for(int i=0;i<n;i++)
+            for(int j= 0;j<m;j++)
+            {
+                  if(grid[i][j] == 1)
+                    x =i , y = j;
+                
+                   if( grid[i][j] == 0)
+                    spaces++;
+            }
+        return recurr(grid,x,y,spaces);
+        // return 0;
+    }
+};
