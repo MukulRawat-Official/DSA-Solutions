@@ -1,0 +1,40 @@
+class Solution
+{
+    public:
+    //Function to return max value that can be put in knapsack of capacity W.
+    int dp[1001][1001];
+
+    int recurr(int W , int wt[] , int val[] ,  int idx)
+    {
+        if(idx == 0 || W == 0)
+        return 0;
+        
+        if(dp[idx][W] != 0)
+        return dp[idx][W];
+        
+        dp[idx][W] = recurr(W,wt,val,idx-1);
+        
+        if(W>= wt[idx-1])
+        dp[idx][W] = max(dp[idx][W] ,recurr(W-wt[idx-1], wt,val,idx-1)+val[idx-1]);
+        
+        return  dp[idx][W]; 
+    }
+    int knapSack(int W, int wt[], int val[], int n) 
+    {
+     memset(dp,0,sizeof(dp));
+     
+     
+     int x = recurr(W,wt,val,n);
+     
+     
+    //  for(int i=0;i<=n;i++)
+    //  {
+    //      for(int j=0;j<=W;j++)
+    //      cout<<dp[i][j]<<" ";
+         
+    //      cout<<endl;
+    //  }
+     
+     return x;
+    }
+};
