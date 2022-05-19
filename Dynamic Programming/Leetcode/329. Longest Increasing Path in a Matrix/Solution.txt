@@ -12,16 +12,9 @@ class Solution {
 public:
     int x , y;
     
-    int maxm(int& a,  int& b, int & c, int& d)
+   int recurr(vector<vector<int>>& m , int i , int j , int prev ,vector<vector<int>>&dp)
     {
-        return max(max(a,b),max(c,d));
-    }
-    
-    int dp[201][201];
-    
-    int recurr(vector<vector<int>>& m , int i , int j , vector<vector<bool>>& visited , int prev)
-    {
-        if(i<0 || j< 0 || i==x || j==y || visited[i][j] || prev >= m[i][j] )
+        if(i<0 || j< 0 || i==x || j==y || prev >= m[i][j] )
             return 0;
         
         if(dp[i][j] != -1)
@@ -29,12 +22,12 @@ public:
         
         dp[i][j] = 1;
         
-        int a = recurr(m,i+1,j,visited,m[i][j]);
-        int b = recurr(m,i,j+1,visited,m[i][j]);
-        int c = recurr(m,i-1,j,visited,m[i][j]);
-        int d = recurr(m,i,j-1,visited,m[i][j]);
+        int a = recurr(m,i+1,j,m[i][j],dp);
+        int b = recurr(m,i,j+1,m[i][j],dp);
+        int c = recurr(m,i-1,j,m[i][j],dp);
+        int d = recurr(m,i,j-1,m[i][j],dp);
         
-        dp[i][j] += maxm(a,b,c,d);
+        dp[i][j] += max(max(a,b) , max(c,d));
         
         return dp[i][j];
     }
@@ -44,7 +37,7 @@ public:
          x = matrix.size() ;
          y = matrix[0].size();
         
-        memset(dp,-1,sizeof(dp));
+        vector<vector<int>>dp(x,vector<int>(y,-1));
         
         int ans = 0;
         
@@ -54,9 +47,7 @@ public:
             {
                 if(dp[i][j] != -1)
                     continue;
-                
-                vector<vector<bool>>visited(x,vector<bool>(y,false));
-                ans  = max(ans ,recurr(matrix , i , j ,visited , -1));
+                ans  = max(ans ,recurr(matrix , i , j , -1,dp));
             }
          
         }
