@@ -1,24 +1,30 @@
 
 /*
 
-  first of all we will sort array , we want unique ans where all elements can't be repeted (in array repeated elements can be given)
+  first of all we will sort array , we want unique ans where all elements can't be repeated (in array repeated elements can be given)
   
   1 1 2 5 6 7 10
   
   target sum = 8;
 
-  we'll start with first element now  -> if we will look all possible combinations with 1 to provide ans
+  we'll start with first element now  ->  we will look all possible combinations with 1 to provide ans
   
-  here's method to remove duplicate if we encounter element first time we can include it in sum..->
+  here's method to remove duplicate if we encounter element first time we can include it in sum.. 
+  but when we start getting sum from next element which is same as previous one we'll skip it
   
-  ie for eg:- if we  for eg ->   we'll check all possible value from first 1 -> 1 1 6 , 1 7
+  ie for eg:-                    we'll check all possible value from first 1 -> 1 1 6 , 1 7
                                  when we encounter 1 second time we'll say hay we have already used 1 earlier so we'll continue;
                                  don't think more than that recursion will solve it for subproblem as we'll 
                                  
                                  our loop will always start from current idx and will run from (idx+1 to n)
-                                 for any element we enocounter idx+... idx we'll skip
+                                 for any element we encounter idx+...  == idx we'll skip
                                  
-  related problem -> find unique permuations where elements are repeated..
+  why don't we use just normal recurstion tree method to solve 
+  like-> include element or not -> if(curr == prev)then don't recurr
+  
+  notice it will not accept your repetition even once so this will not work
+  
+  related problem -> find unique permuations where elements are repeated.. this problem also took many days earlier for me lol
 */
 
 class Solution {
