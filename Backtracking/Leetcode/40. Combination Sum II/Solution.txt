@@ -1,0 +1,66 @@
+
+/*
+
+  first of all we will sort array , we want unique ans where all elements can't be repeted (in array repeated elements can be given)
+  
+  1 1 2 5 6 7 10
+  
+  target sum = 8;
+
+  we'll start with first element now  -> if we will look all possible combinations with 1 to provide ans
+  
+  here's method to remove duplicate if we encounter element first time we can include it in sum..->
+  
+  ie for eg:- if we  for eg ->   we'll check all possible value from first 1 -> 1 1 6 , 1 7
+                                 when we encounter 1 second time we'll say hay we have already used 1 earlier so we'll continue;
+                                 don't think more than that recursion will solve it for subproblem as we'll 
+                                 
+                                 our loop will always start from current idx and will run from (idx+1 to n)
+                                 for any element we enocounter idx+... idx we'll skip
+                                 
+  related problem -> find unique permuations where elements are repeated..
+*/
+
+class Solution {
+public:
+   
+    vector<vector<int>>ans;
+    
+    void recurr(vector<int>&c , int target , int idx ,vector<int>&arr)
+    {
+        
+        
+        if(target == 0)
+            ans.push_back(arr);
+        
+       
+        
+        for(int i=idx;i<c.size();i++)
+        {
+            if(target<c[i])
+                break;
+            
+            if(i>idx && c[i] == c[i-1])
+                continue;
+             /*
+             
+             this line including for loop took my half day lol
+             
+             */
+            
+            arr.push_back(c[i]);
+            recurr(c,target-c[i],i+1,arr);
+            arr.pop_back();
+        }
+    }
+
+    vector<vector<int>> combinationSum2(vector<int>& candidates, int target) {
+        
+       
+        vector<int>find;
+        int n  = candidates.size();
+        sort(candidates.begin(),candidates.end());
+        recurr(candidates,target,0,find);
+        return ans;
+    }
+};
