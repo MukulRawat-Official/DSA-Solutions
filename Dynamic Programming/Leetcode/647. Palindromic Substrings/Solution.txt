@@ -1,0 +1,45 @@
+
+
+/*
+    to reduce redudnancy we can check pallindroms from middle if we econunter any non equal element from left and right we can 
+    get assured that next element will also not be pallindromes
+    
+    as we move from left to right we will expand as follow
+    
+    
+                 left<----------element----------->right   (odd pallindromes)
+                 left<----------element , element + 1 pos ----------->right  (even pallindromes)
+ */
+
+class Solution {
+public:
+    int countSubstrings(string s) {
+        
+        int n = s.length();
+        int ans = 0;
+        
+        for(int i=0;i<n;i++)
+        {
+            int left = i , right = i;
+            
+            while(left>=0 && right < n && s[left] == s[right])
+            {
+                left--;
+                right++;
+                ans++;
+            }
+            
+            left = i , right = i+1;
+            
+              while(left>=0 && right < n && s[left] == s[right])
+            {
+                left--;
+                right++;
+                ans++;
+            }
+        }
+        
+        
+        return ans;
+    }
+};
