@@ -1,0 +1,62 @@
+/*
+    to reduce redudnancy we can check pallindroms from middle if we encounter any non equal element from left and right we can 
+    get assured that next element will also not be pallindromes
+    
+    as we move from left to right we will expand as follow
+    
+    
+                 left<----------element----------->right   (odd pallindromes)
+                 left<----------element , element + 1 pos ----------->right  (even pallindromes)
+                 from it we can find max length
+ */
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        
+        int n = s.length();
+        int ans = 0;
+        string y = "";
+        
+        for(int i=0;i<n;i++)
+        {
+            int left = i-1, right = i+1 , count = 1;
+            
+            while(left>=0 && right <n && s[left] == s[right])
+            {
+                left--;
+                right++;
+                count+=2;
+            }
+            
+            if(count>ans)
+            { 
+                ans = count;
+                left++;
+                right--;
+                y = s.substr(left ,right-left+1);
+            }
+               
+            left = i;
+            right = i+1;
+            count = 0;
+            
+             while(left>=0 && right <n && s[left] == s[right])
+            {
+                left--;
+                right++;
+                count+=2;
+            }
+            
+             if(count>ans)
+             {
+                 left++;
+                 right--;
+                 ans = count;
+                 y = s.substr(left,right-left+1);
+             }
+        
+        }
+        
+        return y;
+    }
+};
