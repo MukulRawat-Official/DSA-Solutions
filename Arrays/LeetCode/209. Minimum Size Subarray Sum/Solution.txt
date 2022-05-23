@@ -1,0 +1,76 @@
+/*
+  
+  t(n) = o(n)
+  
+  eg :-    10 2 3 4 10 8 15
+  
+  target size = 20;
+  
+  imp point-> subarray are continious and if we check for index  and find its possible size then we dont need to look for that
+              index further we can check for next index from there
+              
+              
+  start from index zero we go for sum
+  
+  10 2 3 4 10  at his point sum  = 29 >=  req sum  ans = 5
+  
+  now we'll see if we can reduce it
+  
+  if we remove 10 ans = 19 which is less than target sum so we can't reduce it now 
+  
+  10 2 3 4 10 8 -> sum = 37  ans = 5 , 6 not taken 
+  
+  we'll reduce it now
+  
+  2 3 4 10 8 - > sum = 27
+  3 4 10 8 -> sum = 25  ans = 4
+  4 10 8 sum = 22 :- ans = 3
+  
+  curr best answer is if we start from element 4
+  
+  4 10 8 15
+  10 8 15
+  8 15 ans updated here to 2
+  
+  so we find out the correct answer
+ 
+*/
+
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& nums) {
+        
+        int n = nums.size();
+        
+        int ans = INT_MAX;
+        int curr = 0;
+        int left  = 0;
+        for(int i=0;i<n;i++)
+        {
+        
+            curr+=nums[i];
+            
+            if(curr>=target)
+            {
+              ans = min(ans , i - left+1);
+              
+             while(curr>=target && left<=i)
+             {
+                 curr-=nums[left];
+                 left++;
+             }
+                
+             left--;
+                curr+=nums[left];
+                
+              ans = min(ans,i-left+1);
+            
+            }
+            
+        }
+        if(ans == INT_MAX)
+            return 0;
+        
+        return ans;
+    }
+};
