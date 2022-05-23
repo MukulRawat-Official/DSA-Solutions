@@ -1,0 +1,70 @@
+/*
+
+follow up nlogn solution
+
+since we got log n here we need to do binary search 
+
+we'll clac prefix sum for array so that we can quickly get sum over a range
+
+now starting from every index we take two pointer l = curr_idx , r = n-1;
+
+we'll find mid such that sum = sum from i to mid 
+we'll find till we get shortest length for each index
+
+
+*/
+
+class Solution {
+public:
+    int minSubArrayLen(int target, vector<int>& arr) {
+        
+        int n = arr.size();
+       
+        vector<int>p(n,0);
+        
+        p[0] = arr[0];
+        
+        for(int i=1;i<n;i++)
+            p[i] = arr[i] + p[i-1];
+        
+        int ans = INT_MAX;
+        
+        for(int i=0;i<n;i++)
+        {
+            int l = i;
+            int r = n-1;
+            
+            while(l<=r)
+            {
+                int mid = (l+r)/2;
+                int sum = 0;
+                
+                if(i == 0)
+                    sum = p[mid];
+                
+                else 
+                    sum = p[mid] - p[i-1];
+                
+                if(target <= sum)
+                {
+                    ans = min(ans,mid-i+1);
+                    
+                    if(target == sum)
+                        break;
+                    
+                    r = mid-1;
+                }
+                
+                
+                else
+                    l = mid+1;
+            }
+        }
+        
+        if(ans == INT_MAX)
+            return 0;
+        
+        else 
+            return ans;
+    }
+};
