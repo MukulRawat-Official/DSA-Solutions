@@ -1,0 +1,46 @@
+/*
+
+again slidig window problem increase frequency of each character as we move from left to right
+
+when we encounter a repeat we will start removing from left till we encounter same element now 
+as we find same element we'll continue testing frequency from here
+
+*/
+
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        
+        unordered_map<char,int>m;
+        
+        int left = 0 , ans = 0 , count = 0;
+        for(int i=0;i<s.length();i++)
+        {
+           
+            
+          if(m[s[i]])
+          {
+              ans = max(ans,count);
+             while(s[i] != s[left])
+             {
+                
+                m[s[left]]--;
+                count--;
+                 left++;
+             }
+              left++;
+              count = i-left+1;
+              // cout<<m[s[i]]<<" ";
+          }
+            else{
+             m[s[i]]++;
+             count++;
+            }
+        }
+        
+        ans = max(ans,count);
+        
+       
+        return ans;
+    }
+};
