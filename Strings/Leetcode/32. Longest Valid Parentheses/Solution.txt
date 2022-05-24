@@ -1,0 +1,75 @@
+/*
+
+Approach -> if we run a single loop from start to end we might get brackets which enocunter us problems
+
+we would be given string sructure like this
+
+  ------xx------x--xxxx-----x
+  
+  ---  :-  valid parenthesis
+  xxx  :-  invalid parenthesis
+  
+  if you watch closely in a single step we can find all indices which makes stack invalid as all invalid parenthsis remain in stack tiil end
+  ans our answer will in between these boundaries
+
+*/
+class Solution {
+public:
+    
+    int longestValidParentheses(string s) {
+        
+        int n = s.length();
+        
+  
+        stack<int>p;  // here we use index for calculation  
+        
+        for(int i=0;i<n;i++)
+        {
+            if(s[i] == '(')  
+            p.push(i);
+            
+            
+            else
+            {
+                if(p.size() && s[p.top()] == '(')
+                p.pop();
+                
+                else
+                p.push(i);
+            }
+        }
+        
+        if(p.size() == 0)
+            return n;
+        
+        if(p.size() == n)
+            return 0;
+        
+        int ans = 0;
+        
+        int idx = n-1;  // we have done 0 based indexing so n-1 
+        
+        /*
+            -------xx ------ x ------- 
+            0       z      l k        n-1
+            
+            we got index k so  curr ans will be  = n-1-k ans we update index to next valid point
+            ie l 
+            
+            then for next answer we'll substract it from z 
+            
+            finally for last case we checked at end
+            
+        */
+        
+        while(p.size())
+        {
+            ans = max(ans , idx - p.top());
+            idx = p.top()-1;
+            p.pop();
+        }
+        
+        return max(idx+1,ans);
+        
+    }
+};
