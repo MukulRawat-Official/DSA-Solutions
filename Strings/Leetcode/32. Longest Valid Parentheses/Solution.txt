@@ -1,6 +1,6 @@
 /*
 
-Approach -> if we run a single loop from start to end we might get brackets which enocunter us problems
+Approach -> if we run a single loop from start to end we might get brackets which wiil give us problems
 
 we would be given string sructure like this
 
