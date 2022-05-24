@@ -79,6 +79,10 @@ public:
    MORE SIMPLIFIED VERSION 
    
    HERE BOTH ABOVE WORK IS DONE AT SAME LOOP
+   
+   in this solution we keep adding index till they are invalid 
+   ans when we find a valid () pair we remove them and find  length from current index to previous
+   invalid index  
 **/
 
 class Solution {
