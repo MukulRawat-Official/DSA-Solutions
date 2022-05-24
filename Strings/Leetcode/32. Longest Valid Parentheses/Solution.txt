@@ -10,7 +10,7 @@ we would be given string sructure like this
   xxx  :-  invalid parenthesis
   
   if you watch closely in a single step we can find all indices which makes stack invalid as all invalid parenthsis remain in stack tiil end
-  ans our answer will in between these boundaries
+  answer will be in between these boundaries
 
 */
 class Solution {
