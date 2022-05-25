@@ -1,0 +1,97 @@
+class Solution {
+public:
+    
+    string add(string& s1 ,string&s2)
+    {
+        string ans = "";
+        
+        int n = s1.length()-1 , m = s2.length()-1;
+        
+        int c = 0;
+        while(n>=0 && m>=0)
+        {
+            int x = s1[n--] + s2[m--] - 2*'0';
+            x+=c;
+            
+            char ch = x%10 + '0';
+            c = x/10;
+            
+            ans = ch + ans;
+        }
+        
+        while(n>=0)
+        {
+            int x = s1[n--] - '0';
+            x+=c;
+            
+            char ch  = x%10 + '0';
+            c = x/10;
+            
+            ans = ch+ans;
+        }
+        while(m>=0)
+        {
+            int x = s2[m--] - '0';
+            x+=c;
+            
+            char ch  = x%10 + '0';
+            c = x/10;
+            
+            ans = ch+ans;
+        }
+        
+        if(c)
+        {
+            char ch = c + '0';
+            ans = ch + ans;
+        }
+        
+        return ans;
+    
+    
+    }
+    string multiply(string n1, string n2) {
+        string ans = "";
+        
+        int n = n1.length() , m = n2.length();
+        
+        int c = 0;
+        for(int i = n-1;i>=0;i--)
+        {
+            int idx = n-1 - i;
+            string temp = "";
+            
+            while(idx--)
+            temp+="0";
+            
+            for(int j = m-1;j>=0;j--)
+            {
+                int x = (n1[i] - '0') * (n2[j] -'0');
+                x+=c;
+                
+                char ch = x%10 + '0';
+                c = x/10;
+                
+                temp = ch + temp;
+            }
+            
+            if(c)
+            {
+                char ch = c+'0';
+                temp = ch + temp;
+                c=0;
+            }
+            
+            ans = add(ans,temp);
+        }
+        
+        int idx = 0;
+        
+        while(idx<ans.size()-1 && ans[idx] == '0')
+            idx++;
+       
+        ans = ans.substr(idx);
+        
+        return ans;
+    }
+};
