@@ -1,0 +1,37 @@
+/*
+  we discovered the use of vectors in maps 
+  
+  we created a map which store same string and second of map stores vector 
+  
+  since angram have all same alphabets
+  sorting anamagrams give same string 
+  so we'll sort string and check if it is already present or 
+  not 
+  
+  
+ */
+
+class Solution {
+public:
+    vector<vector<string>> groupAnagrams(vector<string>& strs) {
+        
+        vector<vector<string>>ans;
+        
+        map<string,vector<string>>s;
+        
+        for(auto& i : strs)
+        {
+            string t = i;
+            
+            sort(i.begin(),i.end());
+            
+            s[i].push_back(t);
+        }
+        
+        for(auto& t : s)
+        ans.push_back(t.second);
+        
+        return ans;
+        
+    }
+};
