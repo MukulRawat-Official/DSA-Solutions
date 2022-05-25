@@ -1,0 +1,74 @@
+/*
+  we'll here sort too accoting to width now only problem is our height as width are already sorted 
+  
+  for this problem  we can cosider it as sub problem -> max increasing subsequence susbseqence probelem in n log n 
+  
+  refer gfg article  to solve longest increasing subsequece in n log n 
+  
+  MAX INCREASING SUB -> 
+  
+   2 , 5 , 1, 4  , 8, 0
+   
+   we maintain a array to calculate max length 
+   
+   2 
+   2 , 5
+   1 , 5 
+   1 , 4
+   1 , 4 , 8
+   0 , 4 , 8
+   
+   we have max size of 3 here :- this method will return size only
+   what we done is we maintain a sorted array if we find greater element we push it in order 
+   if we find lower element we perform binary search and put in its correct position 
+   
+   from here we can get envolpe
+   
+   note while sorting envlope if width of two envolope is same we'll sort height in decreasing order
+   
+   why???
+   
+   beacause we don't want our envolpe size to increase twice by same width 
+   
+   eg:-
+   
+   2,3  |  4,5 | 4,7 
+   
+   height -> 3 , 5 , 7 (which is wrong)
+   
+   2,3 | 4,7 | 4,5
+   
+   height -> 3 , 7 (correct ans)
+
+*/
+
+bool mycmp(vector<int>& a, vector<int>&b)
+{
+    if(a[0] == b[0])
+        return a[1]>b[1];
+    return a[0]<b[0]; //  imp see above
+}
+
+class Solution {
+public:
+    int maxEnvelopes(vector<vector<int>>& e) {
+        
+        int n = e.size();
+        sort(e.begin(),e.end(),mycmp);
+        vector<int>h;
+        
+        for(int i=0;i<n;i++)
+        {
+            auto it = lower_bound(h.begin(),h.end(),e[i][1]);
+            
+            if(it == h.end())
+                h.push_back(e[i][1]);
+            
+            else
+                *it = e[i][1];
+        }
+        
+        return h.size();
+        
+    }
+};
