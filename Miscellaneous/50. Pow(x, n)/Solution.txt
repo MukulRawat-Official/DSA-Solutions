@@ -1,0 +1,44 @@
+/*
+
+   solved using binary exponentiation 
+   
+   represent power no in bits ....
+   find squre of base no in every term
+   
+   like
+   
+   x , x2, x4 , x8 ....
+   1 , 0 , 0  , 1 
+   
+   if multiply it with answer 
+
+*/
+class Solution {
+public:
+    
+    double myPow(double x, int n) {
+      
+        double ans = 1;
+        long m = n;
+        
+        bool neg  = false;
+        
+        if(m<0)
+        { m*=-1; neg = !neg;}
+        
+        while(m)
+        {
+            
+            if(m&1)
+            ans *=x; 
+            
+            x*=x;
+            m= m>>1;
+        }
+        
+        if(neg)
+            return 1/ans;
+        
+        return ans;
+    }
+};
