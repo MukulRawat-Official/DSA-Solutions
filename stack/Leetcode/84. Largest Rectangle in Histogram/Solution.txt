@@ -1,0 +1,81 @@
+/*
+ 
+ the idea is that maximum area can be formed while considering minimun height of array only
+ 
+ we will search from each index left and right while size <= left and right index 
+ 
+ after we find that lenegth we'll multiply length with curr height to find answer
+ 
+ one more thing to reduce complexity we'll maintain previous greater left and right for each index
+ 
+ 
+
+*/
+class Solution {
+public:
+    int largestRectangleArea(vector<int>& h) {
+        
+        int n = h.size();
+        vector<int>l(n),r(n);
+        /*
+         
+         no of elements greater on left and right side
+        
+        */
+        l[0]= -1;
+        stack<int>s;
+        s.push(0);
+        for(int i=1;i<n;i++)
+        {
+            while(s.size() && h[i]<=h[s.top()])
+            s.pop();
+            
+            if(s.size())
+            l[i] = i - s.top()-1;
+            
+            else
+            l[i] = -1;
+            
+            s.push(i);
+        }
+        
+        while(s.size())
+            s.pop();
+        
+        r[n-1] = -1;
+        s.push(n-1);
+        for(int i = n-1;i>=0;i--)
+        {
+            while(s.size() && h[s.top()]>= h[i])
+                s.pop();
+            
+            if(s.size())
+                r[i] = s.top() - i-1;
+            
+            else
+                r[i] = -1;
+            
+            s.push(i);
+        }
+        
+//         for(auto &i : l)
+//             cout<<i<<" ";
+        
+//         cout<<endl;
+        
+//         for(auto& i: r)
+//             cout<<i<<" ";
+        
+        
+        int ans = 0;
+        
+        for(int i = 0;i<n;i++)
+        {
+            int x = (l[i] == -1 ? i : l[i]) + (r[i] == -1? n-1-i : r[i]); // including left and right elements
+            x++;  // inclufing this curr element
+            ans = max(x*h[i] , ans);
+        }
+        
+        return ans;
+    }
+};
