@@ -1,0 +1,66 @@
+/*
+
+ we maintain a stack with greater element
+ 
+ ie -> all greater element till previous encountbered elments
+ 
+ suppose at any point we enounter an element which is gretest at any point 
+ then we will be sure any element greater than this will cover all previous one too 
+ thereby we maintain a array with greater elements any comparing our no with only them 
+ 
+ 
+ 100,80,60,70,60,75,200,85
+ 
+ eg:-  
+ 
+ 100   -- ans = 1;
+ 100, 80 ans = 1;
+ 100 80 60  ans = 1;
+ 100 80 70  ans = 2;
+ 100 80 70 60 ans  = 1;
+ 100 80 75  ans = 4;
+ 200 ans = 7
+ 200 85 ans = 1;
+ 
+ ans = 1 , 1 , 1, 2, 1, 4, 7, 1
+ 
+ for finding answer length we can store index of element along with element itself
+
+*/
+
+class StockSpanner {
+public:
+    int c;
+    stack<pair<int,int>>s;
+    StockSpanner() {
+        c = -1;
+    }
+    
+    int next(int p) {
+        c++;
+        int ans = 0;
+            
+        if(c == 0)
+        {
+            s.push({p,c});
+            ans = 1;
+        }
+        
+        
+        else
+        {
+            while(s.size() && s.top().first <= p)
+            s.pop();
+             
+       
+            if(s.size() == 0)
+            ans = c+1;
+            
+            else
+            ans = c - s.top().second;
+            
+            s.push({p,c});
+         }
+         return ans;
+    }
+}
