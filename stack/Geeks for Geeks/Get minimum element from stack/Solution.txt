@@ -1,0 +1,78 @@
+/*
+  we have to do this in o(1)
+  space
+  
+  in normal variation we maintain two stack one is normal stack and another anoter one here from minimun till that index
+  in this problem we assume all no are positive now
+  
+  we take first element as min 
+  now when we encounter any element which is lesser than min
+  
+  we replace that value by curr val - curr min  (which will be negative so that we could know it is min)
+  
+  now we when pop taht elemnt we can perform     currmin - curr element -> it will give previous min
+  and return             curr neg val +  prev min which will return curr no
+  
+  eg;:- 
+  
+  
+  m  = min 
+  x = curr val
+  
+  x-m  push (if x<m)  m = x
+  
+  while pop ->  m = t + m  (here t = x-m)   x = curr value
+  
+*/
+class Solution{
+    int m;
+    stack<int> s;
+    public:
+       Solution()
+       {
+           m = -1;
+       }
+    
+       /*returns min element from stack*/
+       int getMin(){
+           if(!s.size())
+           return -1;
+           
+           return m;
+           //Write your code here
+       }
+       
+       /*returns poped element from stack*/
+       int pop(){
+           
+           if(!s.size())
+           return -1;
+           
+          int t = s.top(); 
+          s.pop();
+          
+          if(t <0)
+          {m = m-t; t+=m;}
+          
+          if(!s.size())
+          m = -1;
+          return t;
+           //Write your code here
+       }
+       
+       /*push element x into the stack*/
+       void push(int x){
+            if(m == -1)
+            m = x;
+            
+            if(x>=m)
+            s.push(x);
+            
+            else
+            {
+                s.push(x-m); 
+                m = x;
+            }
+           //Write your code her
+          }
+};
