@@ -1,0 +1,49 @@
+/*
+ 
+   we can just use hash map and check frequenecy 
+   here we have done some space optimizations using bit mask
+   
+   we represent each character by a bit a = 2 power 0 , b = 1 , c =2 ...
+   
+   so max size will be 2  power 26
+   
+   which can be easily stored in integer
+   
+   if & product of two no is zero it means they have no same character 
+   and we'll store size of it
+  
+*/
+class Solution {
+public:
+    int maxProduct(vector<string>& w) {
+        
+       int n = w.size();
+        
+        vector<int>arr(n);
+        
+        for(int i=0;i<n;i++)
+        {
+            int num = 0;
+            for(auto& j : w[i] )
+            {
+              
+                num = num | ( 1<<(j-'a') ); 
+            }
+            arr[i]= num;
+        }
+        
+        
+        int ans = 0;
+        
+        for(int i=0;i<n;i++)
+        {
+            for(int j = 0;j<n;j++)
+            {
+                if(!(arr[i] & arr[j]))
+                ans = max(ans , (int)(w[i].size() * w[j].size()));
+            }
+        }
+        
+        return ans;
+    }
+};
