@@ -1,0 +1,64 @@
+/*
+   floyd's algorithm
+*/
+typedef ListNode node;
+class Solution {
+public:
+    int count(node** head)
+    {
+        node* temp = *head;
+        
+        if(temp == NULL)
+            return 0;
+        
+        int count = 0;
+        
+        while(temp!=NULL)
+        {
+            temp = temp->next;
+            count++;
+        }
+        
+        return count;
+    }
+    ListNode* rotateRight(ListNode* head, int k) {
+        
+        int n = count(&head);
+         
+        
+        if(n == 0)
+            return NULL;
+        
+        k = k % n;
+        
+        if(k == 0)
+            return head;
+        
+        k = n-k;
+        
+        k--;
+        
+        node* temp = head;
+        
+        while(k>0)
+        {
+             k--;
+             temp = temp->next;
+        }
+        
+       
+        
+        node* new_h = temp->next;
+        temp->next = NULL;
+        temp = new_h;
+        
+        
+        while(temp->next != NULL)
+            temp = temp->next;
+        
+        temp->next = head;
+        
+        return new_h;
+        
+    }
+};
