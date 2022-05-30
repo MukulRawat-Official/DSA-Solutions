@@ -17,7 +17,7 @@ public:
     int divide(long div, long d) {
         
        
-        if(div == INT_MIN && d == -1) // bad test case give this reult wrong
+        if(div == INT_MIN && d == -1) // bad test case give this result wrong
             return INT_MAX;
         
         bool neg = false;
