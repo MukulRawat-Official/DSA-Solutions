@@ -9,6 +9,8 @@
   
   else return our answer;
   
+  we can do same thing by bitwise operation as well
+  
 */
 
 
