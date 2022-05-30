@@ -1,0 +1,87 @@
+/*
+ 
+  addition like binary exponentation is done here
+  we keep increasing no to double till we can substract it 
+  and when we reach at no stage we can't delete more
+  
+  we'll check if its still greater than our divisor 
+  if it so we start from our current divisor then
+  
+  else return our answer;
+  
+*/
+
+
+class Solution {
+public:
+    int divide(long div, long d) {
+        
+       
+        if(div == INT_MIN && d == -1) // bad test case give this reult wrong
+            return INT_MAX;
+        
+        bool neg = false;
+        
+        if(div<0)
+        {
+            div = abs(div);
+            neg = true;
+        }
+        
+        if(d<0)
+        {
+           d = abs(d);
+           neg =!neg;
+        }
+        
+        cout<<neg;
+        
+        if(d>div)
+            return 0;
+        
+        long x  = d;
+        
+        
+        
+        
+        div-=d;
+       
+        long ans = 1;
+        int fact =1;
+        
+        while(div)
+        {
+            if(div>=d+d)
+            {
+                fact+=fact;
+                ans +=fact;
+                d = d + d;
+                div = div - d; 
+            }
+            
+            else if(div>=d && d>x)
+            {
+               ans+=fact;
+               div-=d;
+            }
+            
+            else if(div>=x)
+            {
+              
+                fact = 1;
+                ans++;
+                div-=x;
+                d = x;
+            }
+            
+            else
+            div = 0;
+            
+        }
+        
+        if(neg)
+            return -ans;
+        
+        return  ans;
+    }
+};
