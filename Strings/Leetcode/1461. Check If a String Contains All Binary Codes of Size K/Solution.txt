@@ -1,0 +1,68 @@
+/*
+   interesting bitwise solution
+   
+   we'll see data from left to right as incoming data
+   
+   010111011
+   
+   k = 3 
+   
+   010
+   0 ---- 101
+   1 ---  011
+   
+   
+   1.> first we find first k bits and store its ans
+   2.> then we remove last bit by mul no by 2  and having & with (2,k) - 1
+       because  k > higest req_bit + 1
+   3.> we'll store our answer in vector array
+   
+   if we'll have all 2k operation then we'll return true;
+*/
+
+class Solution {
+public:
+    bool hasAllCodes(string str, int k) {
+    
+        int n = str.length();
+        
+        if(n<k)
+            return false;
+        
+        
+        int x = (int)pow(2,k) - 1;
+        vector<int>arr(x+1,0);
+
+        
+        int num = 0;
+        for(int i=0;i<k;i++)
+        {
+            num<<=1;
+            num  = num | (str[i] & 1);
+        }
+      
+        arr[num]=1;
+        
+        for(int i=k;i<n;i++)
+        {
+            num = num << 1;
+            num = num & x;
+            num  = num | (str[i] & 1);
+            arr[num]=1;
+        }
+        
+      
+        for(auto& i : arr)
+         if(!i)
+                return false;
+        
+        return true;
+    }
+};    
+          
+            
+      
+        
+
+      
+        
