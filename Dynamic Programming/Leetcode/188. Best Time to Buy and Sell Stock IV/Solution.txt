@@ -1,0 +1,41 @@
+/*
+   recursive function :- how to think ? 
+   
+   1.> we can't buy and sell at same day 
+   2.> we can't buy more if we have have current stocks -> ie we need to sell them first
+   3.> at most k transatcion (buy sell pair)
+   
+   -> feilds that will change in recursion -> idx , current status 1 for buying stock and 0 for selling , k-> no of transaction left
+   
+   -> therfore we would have 3d dp
+   
+    if you can make recursive function by considering above points you can use memoization dp for it as well
+*/
+
+class Solution {
+public:
+    int recurr(vector<int>&arr , int idx , int k , int b_s, vector<vector<vector<int>>>&dp)
+    {
+        if(idx >= arr.size() || !k)
+            return 0;
+        
+        if(dp[idx][b_s][k] !=-1)
+            return dp[idx][b_s][k];
+        
+        dp[idx][b_s][k] = 0; 
+        
+        if(b_s)
+        dp[idx][b_s][k] = max(recurr(arr,idx+1,k,1,dp) , recurr(arr,idx+1 , k , 0,dp) - arr[idx]);
+        
+        else
+        dp[idx][b_s][k] = max(recurr(arr,idx+1,k,0,dp) , arr[idx] + recurr(arr,idx+1,k-1 , 1,dp));
+        
+        return dp[idx][b_s][k];
+    }
+    int maxProfit(int  k ,vector<int>& prices) {
+        int n = prices.size();
+        
+        vector<vector<vector<int>>>dp(n,vector<vector<int>>(2,vector<int>(k+1,-1)));
+        return recurr(prices,0 , k , 1 , dp);
+    }
+};
