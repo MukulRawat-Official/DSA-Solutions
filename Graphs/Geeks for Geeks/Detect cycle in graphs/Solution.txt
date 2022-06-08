@@ -1,0 +1,140 @@
+/*
+     dfs and bfs solution both 
+ 
+  
+ 
+*/
+
+/*                    DFS          
+
+   we'll just maintain a normal visited array for dfs traversal 
+   but in order to detect cycle -> a cycle in directed graph only exist if in single recursion call we get a cycle
+   
+   eg:-
+   
+     1-> 2 -> 3 <- 4 <- 5 <- 6 
+     
+     extra edges
+     1 -> 3
+     4 -> 6
+     
+     not if we run for normal visited check for loop 1->3  we get 3 two time but they're from diffrent source
+     ie we can't reach 3 at single call so no cycle(its obivious if you can't reach one path at single call it will not be cycle)
+     
+     no see for loop 4->6
+     we can see can reach  node 4 while passing from 6 in single call so its a cycle 
+     
+     thereby we need to maintain a single call structure which check current call elements only so we can 
+     detect cycle
+*/
+#include <bits/stdc++.h>
+using namespace std;
+
+class Solution {
+  public:
+    
+    bool recurr(vector<int>adj[] , vector<int>&v , vector<int>&rs , int idx)
+    {
+        v[idx] = 1;
+        rs[idx] = 1;
+     
+        for(auto& x  : adj[idx])
+        {
+            if(rs[x])
+            return true;
+            
+            if(!v[x])
+            if(recurr(adj,v,rs,x))
+            return true;
+        }
+        
+        rs[idx] = 0; // making rs  false after current call 
+        
+        return false;
+    }
+    bool isCyclic(int V, vector<int> adj[]) {
+        
+       vector<int>v(V,0) , rs(V,0); 
+       // rs = recursion stack which will check for current call only
+       
+       for(int i=0;i<V;i++)
+       {
+           if(v[i])
+           continue;
+           
+           if(recurr(adj, v , rs , i))
+           return true;
+       }
+       
+       return false;
+        
+    }
+};
+
+/*                         BFS             
+
+we can't  maintain a single recursive stack in bfs so what we do now
+
+we can observe that topological sort works only for DAG(directed acyclic graph)
+if we had cycles then some nodes will not be processed
+
+eg :- 4->1-> 2 -> 3
+     extra 3->1
+     
+     in this case indegree:
+     
+     4 -> 0 
+     1 -> 2
+     2 -> 1
+     3 -> 1
+     
+     but only node 4 will be processed
+     
+     ans deg of 1 after processing 4  will be one 
+     so no more further processing 
+     so we'll have cycle here
+
+*/
+
+
+class Solution {
+  public:
+
+    bool isCyclic(int V, vector<int> adj[]) {
+        
+        vector<int>deg(V,0) ;
+        queue<int>q;
+        
+        for(int i = 0;i<V;i++)
+        {
+            for(auto &x : adj[i])
+            deg[x]++;
+        }  
+        
+        for(int i=0;i<V;i++)
+        if(!deg[i]) // zero degree nodes
+        q.push(i);
+        
+            while(q.size())
+            {
+                int t = q.front();
+                q.pop();   
+                for(auto& x : adj[t])
+                {
+                    deg[x]--;
+                    
+                    if(deg[x] == 0)
+                     q.push(x);
+                    
+                }
+            }
+        
+        
+        for(int i =0;i<V;i++)
+         if(deg[i])
+         return true;
+         
+         return false;
+        
+    }
+};
