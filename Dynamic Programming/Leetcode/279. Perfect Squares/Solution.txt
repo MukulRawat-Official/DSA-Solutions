@@ -1,0 +1,43 @@
+/*
+
+   unbounded knapsack pattern we have given w (here a no) 
+   we can get some weight (here are squares)
+   ans we need to find min val (int original knapack we need to find max value)
+
+*/
+
+
+#define INF 100
+#define ll int 
+class Solution {
+public:
+    ll dp[101][10001];
+    
+    int recurr(ll idx , ll  n)
+    {
+        if(idx == 0)
+            return INF;
+        
+        if(n == 0)
+            return 0;
+        
+        if(dp[idx][n] != -1)
+           return dp[idx][n];
+        
+        
+        if(idx*idx <= n)
+            dp[idx][n] = min(recurr(idx - 1, n) , recurr(idx, n - idx*idx) + 1);
+        
+        else
+            dp[idx][n] = recurr(idx-1,n);
+        
+        return dp[idx][n];
+    }
+    
+    
+    int numSquares(int n) {
+        memset(dp,-1,sizeof(dp));
+        int idx = sqrt(n);
+        return recurr(idx , n);
+    }
+};
