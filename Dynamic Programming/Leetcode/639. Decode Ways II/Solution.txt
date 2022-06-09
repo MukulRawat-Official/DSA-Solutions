@@ -1,0 +1,92 @@
+/*
+
+  how to find recursive function 
+  
+ 1.> When we consider single digit only -> 1, 9 (1 way) ,  * (9 ways)
+ 2.> when we consider double digits  
+ 
+   '1' (idx > = 0 && idx<= 9 ), '2' (if idx + 1  >= '1'  && <= '6') {1 way in both of them}
+    1* ->  (* = 1 - 9) therefore 9 ways
+    2* ->  (here for two we need * >= 1 && *<=6) && therefore 6 ways
+    ** -> only 1 and 2 can form double digit so total ways will be (9+6)  = 15
+    
+    therefore we'll make recursive call for one space and two spaces as well then return sum of all 
+    
+    only index is changed so 1D dp is needed
+
+*/
+#define mod 1000000007
+class Solution {
+public:
+    long dp[100001];
+    long recurr(string& s, int idx)
+    {
+        if(idx>= s.size())
+            return 1;
+        
+        if(s[idx] == '0')
+            return 0;
+        
+        if(dp[idx]!= -1)
+            return dp[idx];
+        
+        dp[idx] = 0;
+        
+        if(s[idx] != '*')
+        {
+            dp[idx]+= (recurr(s,idx+1)) ;
+          
+        }
+        else
+        {
+            for(int i =1 ;i<=9;i++)
+                dp[idx] += recurr(s,idx+1);
+        
+        }
+        
+        if(idx < s.size()-1)
+        {
+         if(s[idx] == '1')
+         {
+            if(s[idx+1] == '*')
+            dp[idx]+= 9*recurr(s,idx+2);
+            
+            else
+            dp[idx]+= recurr(s,idx+2);
+
+         }
+            
+         if(s[idx] == '2')
+         {
+             if(s[idx+1] == '*')
+                 dp[idx] += 6*recurr(s,idx+2);
+             
+             else if(s[idx+1]<='6')
+                 dp[idx] += recurr(s,idx+2);
+             
+          
+         }
+            
+        if(s[idx] == '*')
+        {
+            if(s[idx+1] == '*')
+                dp[idx] += 15 * recurr(s,idx+2);
+            
+            else if(s[idx+1]<= '6')
+                dp[idx] +=  2 * recurr(s,idx+2);
+            
+            else
+                dp[idx] += recurr(s,idx+2); 
+            
+            
+         }
+        }
+        
+        dp[idx]%=mod;
+        return dp[idx];
+    }
+    int numDecodings(string s) {
+        memset(dp,-1,sizeof(dp));
+        return recurr(s,0)%mod;
+    }
+};
