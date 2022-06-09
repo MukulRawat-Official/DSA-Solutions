@@ -7,7 +7,17 @@
   
   now since only one factor idx is changing one d dp will be used
 */
+/*
+  
+  we run through current index find it in map
+  we have two choices either we create new string and serach for bigger word
+  or start from next index to find new word
+  
+  if we are able to write down above recursive function next 
+  step is to check variable changes only index variable changes 
+  so dp will be 1 d
 
+*/
 class Solution {
 public:
     
