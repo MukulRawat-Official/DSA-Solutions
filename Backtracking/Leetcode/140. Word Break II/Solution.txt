@@ -1,0 +1,42 @@
+/*
+ just traverse through every word if we found that word in set
+ we add it to current string and start searching for next index
+ if we reach end of string it means that string exist so we'll return our answer then
+
+*/
+class Solution {
+public:
+    vector<string>ans;
+
+    void recurr(string& str , set<string>&s , int idx , string t)
+    {
+        if(idx >= str.size())
+        {
+            t.pop_back();
+            ans.push_back(t);
+            return;
+        }
+        
+        string temp = "";
+        for(int i = idx;i<str.size();i++)
+        {
+            temp += str[i];
+            
+            if(s.count(temp))
+            recurr(str,s,i+1, t + temp + " " );
+        }
+    }
+    
+   
+    
+    vector<string> wordBreak(string s, vector<string>& w) {
+        set<string>se;    
+        for(auto& x : w)
+            se.insert(x);
+        
+        recurr(s, se ,  0 , "");
+        
+        return ans;
+        
+    }
+};
