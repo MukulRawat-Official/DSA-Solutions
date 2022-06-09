@@ -1,13 +1,4 @@
 /*
-  we have two choices with we take single alphabets
-  or two aplhabets
-  
-  we can take two alphabets only when we get '1' or '2' (20 to 26)
-  if we encounter zero it will not make answetr possible  as we can't make it from zero
-  
-  now since only one factor idx is changing one d dp will be used
-*/
-/*
   
   we run through current index find it in map
   we have two choices either we create new string and serach for bigger word
