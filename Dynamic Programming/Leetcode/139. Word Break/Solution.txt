@@ -1,0 +1,48 @@
+/*
+  we have two choices with we take single alphabets
+  or two aplhabets
+  
+  we can take two alphabets only when we get '1' or '2' (20 to 26)
+  if we encounter zero it will not make answetr possible  as we can't make it from zero
+  
+  now since only one factor idx is changing one d dp will be used
+*/
+
+class Solution {
+public:
+    
+    int dp[301];
+    
+    bool recurr(string& str ,set<string>&s , int i)
+    {
+        if(i>= str.length())
+            return dp[i] = true;
+        
+        if(dp[i] != -1)
+            return dp[i];
+        
+        string temp = "";
+        
+        for(int l = i; l<str.length();l++)
+        {
+             temp+=str[l];
+            
+            if(s.count(temp))
+            {
+                if(recurr (str , s , l+1))
+                    return dp[i] = true;
+            }
+        }
+        
+        return dp[i] = false;
+    }
+    bool wordBreak(string s, vector<string>& w) {
+       set<string>se;
+       memset(dp,-1,sizeof(dp)); 
+        for(auto& x : w)
+        se.insert(x);
+        
+        return recurr(s,se,0);
+        
+    }
+};
