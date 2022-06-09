@@ -1,0 +1,51 @@
+/*
+  we have two choices with we take single alphabets
+  or two aplhabets
+  
+  we can take two alphabets only when we get '1' or '2' (20 to 26)
+  if we encounter zero it will not make answetr possible  as we can't make it from zero
+  
+  now since only one factor idx is changing one d dp will be used
+*/
+class Solution {
+public:
+    int dp[100];
+    int recurr(int idx , string& s)
+    {
+        if(idx>= s.size())
+            return 1;
+        
+        if(s[idx] == '0')
+            return 0;
+        
+        if(dp[idx] != -1)
+            return dp[idx];
+        
+        dp[idx] = 0;
+        
+        if(s[idx] == '1')
+        {
+            dp[idx]+= recurr(idx+1, s);
+            
+            if(idx<s.size()-1)
+            dp[idx]+= recurr(idx+2,s);
+        }
+        else if(idx<s.size()-1 && s[idx] == '2'  && s[idx+1] >= '0' &&  s[idx+1] <= '6' )
+        dp[idx] += recurr(idx+1,s) + recurr(idx+2,s);
+        
+        
+        else
+        dp[idx] += recurr(idx+1,s);
+        
+        return dp[idx];
+    }
+    
+    
+    int numDecodings(string s) {
+        
+        memset(dp,-1,sizeof(dp));
+        int idx =  0;
+        
+        return recurr(idx , s);
+    }
+};
