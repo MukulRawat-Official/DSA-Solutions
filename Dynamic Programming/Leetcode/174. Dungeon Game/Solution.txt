@@ -1,0 +1,94 @@
+/*
+
+  main task to write recursive function for given program ? 
+  
+  how to break it down :-
+  
+  1.> we need life only when our health is negative 
+  2.> i'm considering that hero can live in zero life( while retruning answer ill just add one so that minmum life becomes one)
+      for all recursive function min life will be zero
+  
+  3.> now consider a path 
+  
+      s  - -  + + +  - - -  + +  - -  e
+         A    B      C       D   F
+      + rep positive health  - rep negative health
+      
+      start looking from end -> 
+      1.> look at D & F portion ->  Let's starting point be D
+      if (D >= F)  then we don't need to provide any previous positive health to hero
+      
+      2.> let (B+D) < (C+F) -> Let's starting point be B
+      in this can we need to provide health { (C+F) - (B+D)}
+      
+      we can provide soltion from here
+      
+  -> recurr through whole graph  from start to end 
+     
+     if at any point we get health greater than zero  ( it means we don't need to provide additional health from this point to end)
+     we make health zero
+     
+     else
+     just return val
+     
+  -> now we need to get max val of all recursion 
+    :- note we already removed all path value that are positive and will change previous ans
+    
+      eg :- 4 -5 6 -4
+      
+      when we start providing our answer from end
+      
+      -4 + 6 = 2
+      
+      -5 + 3 = -3
+      (this is invalid because +ive health of 6 doesn't affect previous answers)
+     
+     
+   NOTE -> we can also think it as kadane aglorithm applied from end for negative numbers (max negative sum) 
+   
+   since two variables i , j are chaning then 2d dp will be formed
+
+*/
+class Solution {
+public:
+    int n , m , ans;
+    int dp[200][200];
+    
+    int recurr(int i , int  j , vector<vector<int>>& arr)
+    {
+       if( i == n-1 && j == m-1 )
+       return dp[i][j] = arr[i][j] > 0 ? 0 : arr[i][j];
+       
+        if(dp[i][j] != -1)
+            return dp[i][j] ;
+        
+        dp[i][j] = arr[i][j]; 
+        
+        if(i<n-1 && j<m-1)
+        dp[i][j] += max( recurr(i,j+1 ,arr) , recurr(i+1,j, arr ));
+        
+        else if(j<m-1)
+        dp[i][j] +=  recurr(i,j+1,arr);
+        
+        else
+        dp[i][j] += recurr(i+1,j,arr);    
+        
+        
+        if(dp[i][j] > 0)
+            dp[i][j] = 0;
+        
+        return dp[i][j];
+    }
+    int calculateMinimumHP(vector<vector<int>>& arr) {
+        n = arr.size();
+        m = arr[0].size(); // n * m
+        memset(dp,-1,sizeof(dp)); 
+        
+        int ans = recurr(0, 0 ,arr);
+        
+        if(ans > 0)
+            ans = 0;
+        
+        return  -ans + 1;
+    }
+};
