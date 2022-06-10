@@ -1,0 +1,44 @@
+/*
+
+ for generating susequence of s we have to either take a character or either don't take it
+ 
+ if we don't take it its quite simple move to next step
+ if we take it then we need to made sure whether they are equal or not to move to next step
+ 
+ since two indexed are changing dp will be 2d dp.
+*/
+
+
+class Solution {
+public:
+    int n  , m ;
+    int dp[1000][1000];
+    
+    int recurr(int i , int  j ,string& s , string& t)
+    {
+        if(j == m)
+            return 1;
+        
+        if( i == n)
+            return 0;
+        
+        if(dp[i][j] != -1)
+            return dp[i][j];
+        
+        dp[i][j] = 0;
+        
+        dp[i][j]+= recurr(i+1,j,s,t);
+        
+        if(s[i] == t[j])
+        dp[i][j] += recurr(i+1,j+1,s,t);
+        
+        return dp[i][j];
+    }
+    
+    int numDistinct(string s, string t) {
+        n = s.size();
+        m = t.size();
+        memset(dp,-1,sizeof(dp));
+        return recurr(0,0,s,t);
+    }
+};
