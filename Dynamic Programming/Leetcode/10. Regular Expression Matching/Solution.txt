@@ -1,0 +1,75 @@
+/*
+
+points to be noted :
+
+1.> Whole string should match
+2.> * -> a* means we can use 'a' any time we want (0 -> inf)
+3.> . -> we can replace it by any character
+4.> .* -> we can form any string from it 
+
+algorithm
+
+1.> our solution will work when our current character match
+  
+   if our current character match
+   
+   a.> we can check if j+1 character is star or not if so then 
+       we have two option whether to include current character or not.
+   b.> if not then we simply call for (i+1 , j+1)
+
+2.> if our current character not match then pattern is invalid
+
+corner case ->  1.> suppose string index reach end but not pattern index , 
+                    we can still reach end in pattern case if we have * at end
+                2.> if our pattern string reach end we can't add any string 
+                3.> if both reaches end simulatneously then pattern is possible
+                
+main string s , pattern p , s index = i , p index = j;
+
+
+*/
+class Solution {
+public:
+    int n , m;
+    int dp[22][32];
+    
+    bool recurr(int i , int j , string& s ,string& p)
+    {
+        if(i >= n && j >= m)
+            return  dp[i][j] = true;;
+        
+        
+        if(j >= m)
+        return dp[i][j] = false;
+        
+        
+        bool match = i<n && (s[i] == p[j] || p[j] == '.');
+        
+        if(dp[i][j] != -1)
+            return dp[i][j];
+        
+        dp[i][j] = 0;
+        
+        
+        if(j<m-1 && p[j+1] == '*')
+        {
+            
+            dp[i][j] += recurr(i,j+2,s,p);
+            
+            if(match)
+            dp[i][j] += recurr(i+1,j,s,p);
+        }
+        
+        else if(match)  
+            dp[i][j] += recurr(i+1,j+1,s,p);
+        
+        return dp[i][j];
+    }
+            
+    bool isMatch(string s, string p) {
+        n = s.size() , m = p.size();
+        memset(dp,-1,sizeof(dp));
+        return recurr(0,0,s,p);
+     
+    }
+};
