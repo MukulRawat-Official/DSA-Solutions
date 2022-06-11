@@ -1,0 +1,65 @@
+/*
+
+ BASE CASES:-
+ 1.>if both string reaches end we get our answer
+ 2.>if pattern reaches ends answer will surely be false
+ 3.>if string reaches end check where all next pattern elements are * then answer is possible
+   (this base case is imp as if remove it answer may lead to infinity)
+   
+ 
+ conditions :-
+ 
+ 1.> if both character match increase both index by one
+ 2.> if pattern = '?'  increase both 
+ 3.> if pattern  = '*' , then we have to option either we include string or not so we'll call (i+1,j) && (i,j+1)
+ 
+ since two variables are changing so 2d dp will be formed
+   
+*/
+class Solution {
+public:
+    int n , m ;
+    vector<vector<int>>dp;
+    bool recurr(int i , int j , string& s , string& p)
+    {
+        if(i >= n && j >= m)
+            return dp[i][j] = true;
+        
+        if(j >= m)
+            return dp[i][j] = false;
+        
+        if(i>=n)
+        {
+            for(int l = j;l<m;l++)
+                if(p[l] != '*')
+                    return false;
+            return true;
+        }
+        
+        if(dp[i][j] != -1)
+            return dp[i][j];
+        
+        bool curr =  (s[i] == p[j]  || p[j] == '?');
+        dp[i][j] = false;
+        
+        
+        if(curr)
+        { dp[i][j] = recurr(i+1,j+1,s,p);}
+        
+        else  if(p[j] == '*')
+        dp[i][j] = recurr(i,j+1,s,p) | recurr(i+1,j,s,p);
+        
+        
+        else
+            return dp[i][j] = false;
+        
+            return dp[i][j];
+    }
+    
+    bool isMatch(string s, string p) {
+        n = s.length() , m = p.length();
+        dp.resize(n+5,vector<int>(m+5,-1));
+        
+        return recurr(0,0 , s ,p);
+    }
+};
