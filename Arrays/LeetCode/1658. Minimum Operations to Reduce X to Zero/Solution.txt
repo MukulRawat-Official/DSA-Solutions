@@ -1,0 +1,120 @@
+ /*                     TWO SOLUTIONS PROVIDEDED   */
+ 
+ /*           USING HASH         
+        the idea is to calc prefix and suffix sum 
+        store prefix sum in hash the run loop for suffix sum 
+        to get sum .
+ */
+ 
+ class Solution {
+public:
+    int minOperations(vector<int>& arr, int x) {
+        int n = arr.size();
+        int ans = INT_MAX;
+        
+        unordered_map<int,int>m;
+        
+        int sum = 0;
+        for(int i=0;i<n;i++)
+        {
+            sum+=arr[i];
+            m[sum] = i+1;
+            
+            if(sum == x)
+            {ans = i+1; break;}
+            
+            if(sum>x)
+                break;
+        }
+        if(sum < x)
+            return -1;
+        sum = 0;
+        
+        
+        
+        for(int i=n-1;i>=0;i--)
+        {
+            sum+= arr[i];
+            
+            if(sum == x)
+            {
+                ans = min(ans , n - i);
+                break;
+            }
+            
+            if(sum>x)
+                break;
+            
+            if(m[x-sum] && m[x-sum]<i)
+            ans = min(ans , n - i + m[x-sum]);
+            
+        }
+        
+        if(ans == INT_MAX)
+            return -1;
+        
+        return ans;
+      
+        
+        
+    }
+};
+
+/*                     SLIDING WINDOW    
+  
+   we need to calc   x + center portion  + y 
+   
+   where (x+y) should be min
+   remember this pattern is solved using sliding windows
+   
+   we'll calc total sum 
+   sum = sum  - target = sum of center area
+   
+   now we just neeed to find largest center area..
+
+*/
+
+class Solution {
+public:
+    int minOperations(vector<int>& nums, int x) {
+        
+        int n  = nums.size();
+        int sum = 0;
+        
+        for(auto& i : nums)
+            sum+= i;
+        
+        if(sum == x)
+            return nums.size();
+        
+        if(sum<x)
+            return -1;
+        
+        sum -= x;
+        
+
+        
+        int  l = 0;
+        int ans = INT_MAX;
+        int curr = 0;
+        
+        for(int i=0;i<n;i++)
+        {
+            curr += nums[i];
+            
+            // cout<<curr<<" ";
+            while(curr>sum)
+            curr-=nums[l++];
+            
+            // cout<<curr<<" ";  
+            if(curr == sum)
+            ans =min(ans , n - (i-l+1) );
+        }
+        
+        if(ans == INT_MAX)
+            return -1;
+        return ans;
+        
+    }
+};
+
