@@ -1,0 +1,91 @@
+/*
+ note-> problem like matrix chain multiplication , i find quite difficult when answer is need to return in vector so yeah!!
+ How to form recursion :-
+ 
+ if we discover a symbol like  + , - , * 
+ 
+ we'll divide string in two parts  (A) * (B)  -> A , B are vector formed by possible small combination 
+ since we need to form all possible combination 
+ 
+ we need to provide operation of A on B (ie A x B)
+ form new vector and return it 
+ 
+ BASE CASE if we discover no symbol we just return no (also it in  a vector)
+ 
+ this solution will also work
+ 
+ How to make it efficient ?
+ 
+ 1.> Use dp but main problem is how here
+ 
+ first point to observe is we need to return all possible combination in a vector 
+ so our dp will also be of vectors
+ 
+ what our dp will actually store :-
+ 
+ 1.> we have two choices either use l , r index to provide vector at l,r index
+ 2.> instead of it since we're working on string we can just associate string as key it will give one D dp
+
+
+*/
+class Solution {
+public:
+    map<string,vector<int>>dp;
+    vector<int> dfs(string& str, int l , int r)
+    {
+        string temp = str.substr(l,r-l+1);
+        
+        if(dp[temp].size())
+            return dp[temp];
+        
+        int j = l;
+        while(j<=r)
+        {
+            if(str[j] == '*' || str[j] == '+' || str[j] == '-')
+                break;
+            j++;
+        }
+        
+        if(j>r)
+        {
+            int x = stoi(temp);
+            dp[temp] = {x};
+            return {x};
+        }  
+        vector<int>ans;
+        int curr;
+        
+        for(int i = l ; i<r;i++)
+        {
+            
+            char s = str[i];
+            if(s!= '*' && s!= '-' && s!= '+')
+                continue;
+            
+            vector<int>left = dfs(str,l,i-1) , right = dfs(str , i+1,r);   
+            
+            for(auto& x : left)
+            for(auto& y : right)
+            {
+                if(s == '*')
+                curr = x*y;
+            
+                else if(s == '-')
+                curr = x-y ;
+            
+                else
+                curr = x+y;
+            
+                ans.push_back(curr);
+            } 
+        }
+        
+        return dp[temp] = ans;
+    }
+    
+    vector<int> diffWaysToCompute(string str){
+        int l  = 0 , r = str.size()-1;
+        return dfs(str , l , r);
+        
+    }
+};
