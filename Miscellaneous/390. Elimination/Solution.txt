@@ -1,0 +1,33 @@
+/*
+   maths question 
+   
+   points to be noted:-
+   
+   1.> every stage size if decreased by two
+   2.> if we deleted from left answer will surely be deleted 
+       by how much -> not since our array is reducing by two elements that reaming their gap will also increase by twice
+   3.> by right side our answer will only be deleted if element are odd
+       eg:- 1 2 3 4 5  -> 2 4  , 1 2 3 4 -> 1 3 
+       so our answer will only change when its odd in right turn .
+*/
+class Solution {
+public:
+    int lastRemaining(int n) {
+        int ans = 1 , factor = 1;
+        bool left = true;
+        while(n!=1)
+        {
+            if(left)
+            ans+= factor;
+            
+            else if(n%2)
+            ans+= factor;
+            
+            factor *= 2;
+            n/=2;
+            left = !left;
+        }
+        
+        return ans;
+    }
+};
