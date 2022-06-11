@@ -1,0 +1,57 @@
+/*
+  point to be noted -> array is increasing , we can move k , k + 1 , k - 1 step
+  
+  how to form recursive function 
+  its quite simple
+  
+  we'll maintain curr position , and value of
+  
+  we'll run through loop curr_idx  + 1
+  
+  ans check whether curr val - our index value - k -> {-1,0,1};
+  if so we go to next step;
+  
+  else if above val  > 1 then surely other values will also be greater than one so we'll not watch them move out of loop
+  
+  we'll return our answer from here
+  
+  since index and k are only changing 2d dp will be formed
+
+
+*/
+
+
+class Solution {
+public:
+    int n;
+    int dp[2000][2000];
+    bool dfs(vector<int>&arr , int i , int  k)
+    {
+          if(i>= n-1)
+              return true;
+          
+          if(dp[i][k] != -1)
+              return dp[i][k];
+        
+          dp[i][k] = false;
+          int curr = arr[i];
+          for(int l =  i+1 ; l<n ; l++)
+          {
+              int x = arr[l] - curr - k;
+              if(abs(x) <= 1)
+              dp[i][k]|= dfs(arr,l, arr[l]-curr);
+              
+              else if(x > 1)
+                  break;
+                  
+          }
+        
+        return dp[i][k];
+        
+    }
+    bool canCross(vector<int>& stones) {
+        n = stones.size();
+        memset(dp,-1,sizeof(dp));
+        return dfs(stones,  0 , 0);
+    }
+};
