@@ -1,0 +1,64 @@
+/*
+  this is a good question i find  it difficult to solve it without help
+  
+  intution:-
+     suppose we travesre from left to right 
+     
+     following conditions are valid :-
+     
+     1.> either we never encounter that character wo we need to take it
+     2.> we never ecnounter it  +  our current character is smaller that prev
+         can we deleted previous characters ?
+         we can deleted only when there is previous character on right side of array (more precivous character is left on right side)
+     3.> what if we have character already visited 
+         even if it is lexiographically smaller at max it will reach upto position where we
+         have already defined character so we just skip it
+     
+     
+     solution :- we maintain a map which store total frequency of elements and a visited array
+     
+     1.> we decrease frequency at each step
+     2.> if we encounted visited element we continue
+     3.> if we encounter non visited element we have two steps
+         a.> if its lexiographically bigger then just add it
+         b.> if prev element have rem freqeuncy greater than 1 we mark it as unvisited and remove it from stack
+      
+*/
+class Solution {
+public:
+    string removeDuplicateLetters(string str) {
+       unordered_map<char,int>m , v;
+       
+       for(auto&x : str)
+       {m[x]++; v[x] = 0;}
+        
+        stack<char>s;
+        for(auto& x : str)
+        {
+            if(!s.size())
+            {s.push(x);  v[x] = 1;}
+            
+            else
+            {
+               if(!v[x])
+               {
+                  while( s.size()&& s.top() > x && m[s.top()])
+                  { v[s.top()] = 0; s.pop();}
+                 
+          
+                  s.push(x);
+                  v[x] = 1;
+               }
+            }
+            
+            m[x]--;
+        }
+        
+        string temp = "";
+        
+        while(s.size())
+        {temp = s.top() + temp; s.pop();}
+        
+        return temp;
+    }
+};
