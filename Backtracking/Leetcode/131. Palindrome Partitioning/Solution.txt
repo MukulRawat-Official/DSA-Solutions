@@ -1,0 +1,52 @@
+/*
+   we'll maintain a vector<string>t
+   
+   we run loop from curr idx to end
+   if we find pallindromic from curr idx to certain idx (let say  y)
+   we'll push it into t and call for(y+1)
+   if we reach end we'll push vector in answer
+   
+   after calling we backtrack t by removing current element and move for other elements
+   
+*/
+class Solution {
+public:
+    int n;
+    vector<vector<string>>ans;
+
+    
+    bool check(string& s , int i , int j)
+    {
+        while(i<j)
+        {
+            if(s[i++] != s[j--])
+                return false;
+        }
+        return true;
+    }
+    void dfs(string& s , int l , vector<string>t)
+    {
+        if(l == n)
+        {
+            ans.push_back(t); // answer found
+            return ;
+        }
+        for(int i = l ; i<n;i++)
+        {
+            vector<vector<string>>y;
+            if(check(s,l,i))
+            {
+                t.push_back(s.substr(l,i-l+1));
+                dfs(s,i+1,t);
+                t.pop_back(); // back track
+            }
+        }
+        
+    }
+    vector<vector<string>> partition(string s) {
+        n = s.size();
+        vector<string>t;
+        dfs(s , 0 , t);
+        return ans;
+    }
+};
