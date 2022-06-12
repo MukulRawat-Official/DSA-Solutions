@@ -1,0 +1,40 @@
+/* just intialize answer array by zero 
+   now recrusively add every element in one array then delele it after work is done
+*/
+class Solution {
+public:
+    int n;
+    int y;
+ 
+    void recurr(vector<int>&arr, int idx , vector<int>& ans)
+    {
+         if(idx == n)
+         {
+             int x = 0;
+             for(auto& t : ans)
+                 x = max(x,t);
+             
+             y = min(x,y);
+             return;
+         }
+        
+        
+         for(int i = 0;i<ans.size();i++)
+         {
+             ans[i]+= arr[idx];
+             recurr(arr,idx+1,ans);
+             ans[i]-= arr[idx]; // backtrack
+         }
+        
+
+    }
+    int distributeCookies(vector<int>& arr, int k) {
+        n = arr.size();
+        vector<int>ans(k,0);
+       
+        y = INT_MAX; 
+        recurr(arr,0,ans);
+        return y;
+        
+    }
+};
