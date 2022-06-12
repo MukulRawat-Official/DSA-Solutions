@@ -1,0 +1,46 @@
+class Solution {
+/*
+ apply brute force 
+ start from every index change value(of sub array) only if present in map
+*/
+public:
+    int n  , m;
+    map<pair<char,char> , int>o;
+    
+    bool recurr(string& s ,string& sub , int idx)
+    {
+        
+        for(int i = 0  ;i<m;i++)
+        {
+            char a = s[i+idx] , b = sub[i];
+            if(a != b)
+            {
+                if(!o[{a,b}])
+                return false;
+                
+            }
+        }
+        
+        return true;
+    }
+    
+    bool matchReplacement(string s, string sub, vector<vector<char>>& mappings) {
+        n = s.size() , m = sub.size();
+       
+        for(auto& it : mappings)
+        {
+            char a  = it[0]  ,b  = it[1];
+             o[{b,a}]++;
+        }
+        
+        bool ans = false;
+        
+        for(int i =0 ;i+m<=n;i++)
+        {
+            ans = recurr(s,sub,i);
+            if(ans)
+                return true;
+        }
+        return false;
+    }
+};
