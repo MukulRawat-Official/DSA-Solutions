@@ -1,0 +1,45 @@
+/
+  
+  How to write recursive code?
+  
+  1.> at each step we need to add current elemenet + path value of the path we choose and return it
+  2.> if we reach end we just return value;
+  
+  since two variables are changing so 2d dp will be formed
+
+*/
+class Solution {
+public:
+    int n , m;
+    int dp[50][50];
+    int recurr(vector<vector<int>>& arr, vector<vector<int>>& mov , int i , int j  )
+    {
+        int x =arr[i][j];
+        if(i == n-1)
+            return x;
+        
+       if(dp[i][j] != -1)
+           return dp[i][j];
+        
+        dp[i][j] = INT_MAX;
+        
+        for(int k =0; k<m; k++)
+        dp[i][j] = min(recurr(arr,mov,i+1,k) + mov[x][k]  + x , dp[i][j]);
+        
+      
+        
+        return dp[i][j];
+    
+    }
+    int minPathCost(vector<vector<int>>& arr, vector<vector<int>>& mov) {
+        n = arr.size();
+        m = arr[0].size();
+        memset(dp,-1,sizeof(dp));
+        int ans = INT_MAX;
+        
+        for(int j = 0;j<m;j++)
+            ans = min(ans ,recurr(arr,mov,0,j));
+        
+        return ans;
+    }
+};
