@@ -1,0 +1,70 @@
+/*
+
+ basically we need to form all by using facotrs given to us
+ and include 1 in our ans as it an super ugly no 
+ 
+ now how to do it?
+ 
+ let n = 12, primes = [2,7,13,19]
+ 
+ we just need to find how we can form smallest no
+ 
+ samllest no = 1,2
+ now after that will be 4 -> ans = 1,2,4
+ after that ans = 1,2,4,7
+ after that ans = 1,2,4,7,8
+ 
+ what do we observe
+ 
+ we mulitlply our factors by smallest no possible
+ as multiplying by samllest no with give smallest answer 
+ so how we will maintain upto which no we have multiplied our no
+ 
+ we maintain an array of multilpied index in which intial value of all no will be zero
+ 
+ we will travese throught whole array and find min elemnt
+ such that min = curr no in array  * previous smallest from which we have not multiplied it
+ 
+ after getiing smallest value for curr index  we update smallest index value of this no by one
+ 
+ one corner case is that what if we get two same 
+ naturally we need to take only one 
+ so in case of collison we update index of any of them 
+*/
+class Solution {
+public:
+    int nthSuperUglyNumber(int k, vector<int>& primes) {
+        if(k == 1)
+            return  1;
+        int n = primes.size();
+        vector<int>fact(n,0) , ans(k,0);
+        // factor array is min value index from which we have multiplied till now 
+        // ans  = ans of upto current index
+        
+        ans[0] = 1; // universal no
+        
+        for(int i =1;i<k;i++)
+        {
+            int curr  = primes[0] * ans[fact[0]];
+            int idx  = 0;
+            
+            for(int i = 1;i<n;i++)
+            {
+                int x = primes[i] * ans[fact[i]]; // current factor * upto smallest no in ans from which we have not multiplied
+                
+                if(curr>x)
+                {
+                    idx = i;
+                    curr = x;
+                }
+                else if(curr == x) // in case of collison 
+                fact[i]++;
+            }
+            
+            ans[i] = curr;
+            fact[idx]++; // updating smallest no index
+        }
+       
+        return ans[k-1];
+    }
+};
