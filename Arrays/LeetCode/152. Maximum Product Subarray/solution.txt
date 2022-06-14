@@ -1,0 +1,83 @@
+/*
+
+how to get to aprroach :- 
+
+we know kadane algoorithm :
+
+take only positive no now
+if we multiply it by any postive no size will only increase so we can just traveers through array and get max possible product
+eg:-
+
+2 3 4 5 0 6 7 8
+curr, max pair taken 
+2         3        4        5           0            6               7            8
+(2,2)   (6,6)     (24,24)  (120,120)  (0 ,120)     (6,120)       (42, 120)    (336 , 336)
+
+strightforward ?  right !!! yes
+
+but what happen when we include negative numbers;
+
+consider postive no as postiive axis and negative no as negative axis
+
+if we have odd no negative no our answer will be negative (it will give least no)
+and if we have even negative no it will give positive ans
+
+we can see that -> negative no causes ans to flip side on both axis 
+how we can solve this now ???
+
+think ??
+
+instead of maintiang curr max only , we'll maintain a curr min as we'll
+suppose if we get a negative no so , curr max and curr min will get interchanged now if again we get 
+curr max and curr min our answer will retrieve to orginal state
+ or we may get our best ans from current min
+ 
+ eg: -2 -4 -8
+ 
+ curr max min pair
+                      (notice here how max and min interchange their position at third point)
+ (-2,-2,-2) (-4,8,-4) (-8, 32,-64)
+ 
+ 
+ eg: -4 -2 -8
+ 
+            
+ (-4,-4,-4) (-2,8,-2) (-8 , 16, -64)
+ 
+ in above both example can you  notice one thing  ?
+ it -ive are even (max == min) ans we get min as curr
+ 
+ when we get a odd no
+ min = that ive no * max (it preserve our neg ans)
+ 
+ when again if we get even max == min 
+ 
+ if again we encounter odd min
+ max = min * that neg no
+ 
+ 
+*/
+
+class Solution {
+public:
+    int maxProduct(vector<int>& nums) {
+      int ans = nums[0];
+      int curr , curr_max = nums[0] , curr_min = nums[0];
+       
+      for(int i = 1;i<nums.size();i++)
+      {
+          curr = nums[i];
+          curr_max*= curr;
+          curr_min*= curr;
+          int a = curr_max;
+          
+          curr_max = max(curr , max(curr_max , curr_min));
+          curr_min = min(curr , min(a , curr_min));
+          
+          ans = max(curr_max , ans);
+      }
+    
+        return ans;
+
+    }
+};
