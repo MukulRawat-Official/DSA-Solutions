@@ -1,0 +1,40 @@
+/*
+
+how to find total no of combination it will need basic maths:
+
+suppise n == 0 -> 1 ans
+n == 1, 9 + 1 -> ans
+
+how to form combaintion suppose n  == 3 
+
+at first place we can fill by -> 9 digits (1-9) , 
+second place by -> rem 8 + 0 (digit) -> 9 digits
+third place -> 8 digits
+
+so ans = 9 * 9 * 8 + 1 (for zero)
+
+for 4 digits
+ans = 9 * 9 * 8 * 7 + 1 
+
+i think you got pattern now
+
+*/
+class Solution {
+public:
+    int countNumbersWithUniqueDigits(int n) {
+       int ans = 0;
+        
+        while(n--)
+        {
+            int curr = 9;
+            int fact = 9;
+            
+            for(int i =1;i<=n;i++)
+            curr*= fact--;
+              
+            ans+=curr;
+        }
+        
+        return ans+1;
+    }
+};
