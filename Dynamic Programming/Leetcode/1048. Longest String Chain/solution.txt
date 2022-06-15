@@ -1,0 +1,47 @@
+/*
+
+suppose we need to make string b to a
+we can add only one character
+how to solve this ? 
+
+we can think other way round too 
+generate all susbtring of bigger letter by removing one letter of bigger letter
+
+how we will solve this?
+
+sort array by size of length();
+
+now generate all substring of bigger letter if we found any prev substring that can be formed by a
+we'll add one to it and find max for dp i
+at last we'll update our answer
+
+*/
+class Solution {
+public:
+    int longestStrChain(vector<string>& words) {
+        
+        unordered_map<string,int>dp;
+        sort(words.begin(),words.end(),[](string& l , string& r){return l.size()<r.size();});
+        
+        int ans = 0;
+        for(auto& i : words)
+        {
+            dp[i] = 1;
+            
+            for(auto j = 0;j<i.size();j++)
+            {
+                string prev = i.substr(0,j) + i.substr(j+1);
+                
+                if(dp[prev])
+                dp[i] = max(dp[i] , dp[prev] + 1);
+            }
+            
+            ans = max(ans , dp[i]);
+        }
+        
+        return ans;
+        
+        
+        
+    }
+};
