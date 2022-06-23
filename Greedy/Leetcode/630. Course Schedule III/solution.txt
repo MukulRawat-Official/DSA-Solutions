@@ -1,0 +1,60 @@
+/*
+  idea is to first sort elements in ascending order by their time
+  now we maintain current time
+  
+  we add events till we have curr_time <= event end time
+  
+  now what if curr_time > event time
+  in this case we can include current event only when 
+  our current event time is lesser than any previous event occured(we'll remove event taking max time from here as it will retrieve 
+  most of time for use)
+  then we can increase our current event
+  
+  else
+  just move forward
+
+*/
+bool mycmp(vector<int>& a, vector<int>&b)
+{
+     if(a[1]>=b[1])
+         return false;
+      else
+         return true;
+}
+class Solution {
+public:
+    int scheduleCourse(vector<vector<int>>& arr) {
+        
+        sort(arr.begin(),arr.end(),mycmp);
+
+        
+        long  pre = 0 ,time = 0 , c = 0;
+        priority_queue<long>q;
+     
+        
+        for(int i = 0;i<arr.size();i++)
+        {
+          if(arr[i][0] + time <= arr[i][1])
+          {
+              q.push(arr[i][0]);
+              time+=arr[i][0];
+              c++;
+          }
+            
+          else
+          {
+              if(q.size() && q.top()> arr[i][0])
+              {
+                  int x = q.top();
+                  q.pop();
+                  q.push(arr[i][0]);
+                  time  += (arr[i][0]-x);
+              }
+          }
+        }
+        
+        return c;
+        
+
+    }
+};
