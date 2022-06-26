@@ -1,0 +1,55 @@
+/*
+
+ x + center portion + y 
+ 
+ we need to find sum of x + y and center poriton is of fixed length 
+ 
+ center is of fixed size  =  n - k elements
+ 
+ so substact this center portion from total sum and return max of theses case
+ sliding window problem.
+
+*/
+
+long long max(long long a , long long b)
+{
+    if(a>b)
+        return a;
+    
+    return b;
+}
+
+class Solution {
+public:
+    int maxScore(vector<int>& arr, int k) {
+       
+        int n = arr.size();
+        
+        int e = n - k;
+        
+        int ans = 0 , sum = 0;
+        long long t = 0;
+        
+        for(int i =0;i<n;i++)
+        {
+            t += arr[i];
+            
+            if(i<e)
+                sum += arr[i];
+        }
+        
+        ans = t - sum;
+        
+        int l  = 0;
+        
+        for(int i = e;i<n;i++)
+        {
+            sum -= arr[l++];
+            sum += arr[i];
+            
+            ans = max(ans , t - sum);
+        }
+
+        return ans;
+    }
+};
