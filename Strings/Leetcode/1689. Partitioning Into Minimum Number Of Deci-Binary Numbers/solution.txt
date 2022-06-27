@@ -1,0 +1,28 @@
+/*
+   we can form string by either 0 , 1  ,  
+   at most we need to make max digit value reptiion 
+   
+   because max digit is 9 and we need at most 9 rep
+   to generate carry we need 10 rep
+   so no worries to check carry.....
+   
+   we need max digit .
+
+*/
+class Solution {
+public:
+    int minPartitions(string n) {
+        
+        int x = 0;
+        
+        for(auto& a : n)
+        {
+            x = max(x , a - '0');
+            
+            if(x == 9)
+                return x;
+        }
+        
+        return x;
+    }
+};
