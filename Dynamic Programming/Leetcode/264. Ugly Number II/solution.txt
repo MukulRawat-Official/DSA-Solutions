@@ -1,0 +1,57 @@
+/*
+
+first no will be 1 as usual now we need to make factors by 2 , 3 , 5 ....
+as of now we need to multiply 2 , 3 , 5 by as small as possible
+
+we'll create array {2 , 3 , 5}  -> {0 , 0 , 0}
+where 0 = arr[0] = 1;  minm  multiplication need to form smallest group
+after we multiply by smallest no we increase its index to multiply to next smallest number.
+
+corner cases -> suppose we have 2 * 3 = 6  (it will be added two times as when 2  mul by smallest no and 3 mul by smallest no so we need to take care of it)
+
+
+
+*/
+class Solution {
+public:
+    int nthUglyNumber(int n) {
+        
+        vector<int>ans(1,1);
+        vector<pair<int,int>>count = { {2,0} , {3,0} , {5,0} };
+        
+    
+        
+        while(ans.size() != n)
+        {
+            
+            int idx = 0 , minm = INT_MAX;
+            
+            for(int i = 0;i<3;i++)
+            {
+                int x = ans[count[i].second] * count[i].first;
+                
+                if(x<minm && ans.back() != x)
+                {
+                    
+                    minm = x;
+                    idx = i;
+                }
+                
+                else if(ans.back() == x || x == minm) // corner cases
+                count[i].second++;
+                
+                
+            }
+            
+            if(minm == INT_MAX)
+            continue;
+            
+            
+            ans.push_back(minm);
+            count[idx].second++;
+        }
+             
+        return ans.back();
+        
+    }
+};
