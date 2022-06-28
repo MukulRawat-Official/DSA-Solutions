@@ -1,0 +1,34 @@
+/*
+   calc frequency of all characters if frequency of one match other then simply decrease it till it get unqeual or get '0'.
+*/
+class Solution {
+public:
+    int minDeletions(string str) {
+        map<char,int>m;
+        
+        for(auto& x : str)
+            m[x]++;
+        
+        set<int>s;
+        
+        int ans = 0;
+        
+        for(auto& x : m)
+        {
+            int f = x.second;
+           
+            while(s.count(f) && f)
+            {
+                f--;
+                ans++;
+            }
+            
+            if(!f)
+                continue;
+                
+            s.insert(f);
+        }
+        
+        return ans;
+    }
+};
