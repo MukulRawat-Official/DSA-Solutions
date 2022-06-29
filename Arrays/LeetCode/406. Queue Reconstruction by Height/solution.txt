@@ -1,0 +1,44 @@
+
+/*
+   main observation is that inserting smaller height person anywhere don't affect any person
+   second main observation is suppose all person are of same height then person infront of queue 
+   will have 0 index and behind it have factor of one 
+   
+   so if we sort array according to bigger heights and push them in array accorgin their key position 
+   
+   [[7,0],[4,4],[7,1],[5,0],[6,1],[5,2]]
+   
+   sorted -> 7,0 7,1 6,1 5,0 5,2 4,4
+   
+   7,0
+   7,0 7,1
+   7,0 6,1 7,1
+   5,0 7,0 6,1 7,1
+   5,0 7,0 5,2 6,1 7,1
+   5,0 7,0 5,2 4,4 6,1 7,1
+   
+   look how smaller elements don't affect bigger element postiion they just displaced them ..
+
+*/
+
+class Solution {
+public:
+    vector<vector<int>> reconstructQueue(vector<vector<int>>& arr) {
+        
+        sort(arr.begin(),arr.end() , [](vector<int>&a , vector<int>&b)
+             {
+                 if(a[0] == b[0])
+                     return a[1]<b[1];
+                 
+                 return a[0]>b[0];
+             });
+        
+        vector<vector<int>>ans;
+        
+        for(auto& x : arr)
+          ans.insert(ans.begin() + x[1] , x);
+        
+        return ans;
+        
+    }
+};
