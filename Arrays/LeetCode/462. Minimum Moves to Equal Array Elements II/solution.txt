@@ -1,0 +1,46 @@
+/*
+  since we need to array equal 
+  its basic we need to find some central term , (so we sort array first)
+  
+  so we must choose either mean , median or mode ...
+  
+  but which one should we choose ... 
+  
+  first choice which comes in mind should be mean ... right .. but we're wrong here
+  let me show you how?
+  
+  correct ans is median 
+  
+  choosing meadin will reduce one element to increase / decrease so it will give best posstible element
+  
+  
+   l l l ..... x ........ r r r
+   
+   let x be median
+   
+   ( r - x ) + ( x - l ) = r - l  (which is a constant value)
+   
+   
+   so if we change  or median to be large or small it will no affect r - l value;
+   moreover 
+   
+   let's take avg ..
+   
+   it's already proved we need to make   --->    (r - l) moves to move to avg  + moving meadian element 
+   therefore it may/may  not give best possible ans
+*/
+
+class Solution {
+public:
+    int minMoves2(vector<int>& nums) {
+        int n = nums.size();
+        int ans = 0;
+        sort(nums.begin(),nums.end());
+        
+        for(int i = 0; i<n/2 ;i ++)
+        ans += nums[n-1-i] - nums[i];
+        
+        
+        return ans;
+    }
+};
