@@ -1,0 +1,59 @@
+/*
+   the main idea is check to check from end if words matches from end then we don't need to make seperate space for it..
+*/
+class trie
+{
+    public:
+    trie* next[26];
+    
+    trie()
+    {
+        for(int i =0;i<26;i++)
+            next[i] = NULL;
+    }
+};
+
+
+class Solution {
+public:
+    int minimumLengthEncoding(vector<string>& words) {
+        int ans = 0;    
+        
+        sort(words.begin(),words.end(), [](string& a , string&b)
+        {
+           return a.size()>b.size(); 
+        });
+        
+        
+        
+        trie* head = new trie();
+        
+        for(auto& x : words)
+        {
+           int j  = x.size();
+           trie* root = head;
+           bool an = false;
+           while(j>0)
+           {
+              int ch = x[j-1] - 'a';
+              
+              if(root->next[ch] != NULL)
+              root = root->next[ch];
+              
+              else
+              {
+                  an = true;
+                  root->next[ch] = new trie();
+                  root = root->next[ch];
+              }j--;
+            }
+            
+
+            if(an) ans = ans + x.size() + 1;
+            
+          
+        }
+        
+        return ans;
+    }
+    
