@@ -1,0 +1,35 @@
+/*
+    we need to maintain two poiters for strings and one pointer for main string 
+    now just check recusively whether pattern matches or not if they matches then return true
+    else return false
+    
+    now as there are three prameters so 3d dp will be formed
+*/
+class Solution {
+public:
+    
+    int dp[101][101][201];
+    int  n , m , z; 
+    
+    int xyz(string&a , string&b , string&c , int i , int j , int k)
+    {
+       if(k == z)return true;
+        
+       if(dp[i][j][k] != -1)return dp[i][j][k];
+       
+       dp[i][j][k] = 0;
+       
+      if(i<n && a[i] == c[k]) dp[i][j][k] |= xyz(a,b,c,i+1,j,k+1);
+        
+      if(j<m && b[j] == c[k]) dp[i][j][k] |= xyz(a,b,c,i,j+1,k+1);
+        
+      return dp[i][j][k];
+          
+    }
+    bool isInterleave(string s1, string s2, string s3) {
+        memset(dp,-1,sizeof(dp));
+        n = s1.size() , m = s2.size() , z = s3.size();
+        if(n+m != z) return false;
+        return xyz(s1,s2,s3,0,0,0);
+    }
+};
