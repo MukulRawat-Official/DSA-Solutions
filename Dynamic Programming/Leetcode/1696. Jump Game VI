@@ -1,0 +1,43 @@
+/*
+  in this case if we wrtie recursive dp of traversion upto k steps behind and check which value will get best suited for us will be a correct soltuon but
+  time complextiy will O(n * k)  in this question k == n so
+  t(n) = O(n*2) which is not acceptable
+  
+  now what we are doing again and again here we are check for k index every time which is redundant 
+  so instead of doing so we create a fix window of size<=k and get best answer from it
+  we can do it by using a map ... 
+  
+  now time complexity will be n log n 
+  free from k.
+
+*/
+class Solution {
+public:
+    int maxResult(vector<int>& arr, int k) {
+        int n = arr.size();
+        int dp[n];
+        dp[0] = arr[0];
+        map<int,int>s;
+        s[arr[0]]++;
+        
+        for(int i = 1;i<n;i++)
+        {
+           auto it = s.end(); it--;
+           dp[i] = arr[i] + it->first;
+           s[dp[i]]++;
+           
+           if(i>=k)
+           {
+               if(s[dp[i-k]] == 1)
+               s.erase(dp[i-k]);
+               
+               else
+               s[dp[i-k]]--;
+           }
+            
+        }
+        
+        return dp[n-1];
+        
+    }
+};
