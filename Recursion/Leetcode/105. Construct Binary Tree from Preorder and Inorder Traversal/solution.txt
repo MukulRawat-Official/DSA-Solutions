@@ -1,0 +1,43 @@
+/*
+   inorder  : 3 9 20 15 7
+   preorder : 9 3 15 20 7
+  
+   not preorder giver curre node head 
+   
+   
+   as for  L  9  R
+   for each part we divide it into left and right  
+  
+
+*/
+typedef TreeNode node;
+class Solution {
+public:
+    
+    node* recurr(vector<int>&arr , vector<int>&pre , int l , int r , int& pi)
+    {
+        if(l>r || pi == pre.size()) return NULL;
+        
+        int idx = l;
+        
+        for(int i = l;i<=r;i++)
+        {
+           if(arr[i] == pre[pi])
+           {idx = i; break;}
+        }
+        
+        pi++;
+                 
+        node* curr = new node(arr[idx]);
+        
+        curr->left = recurr(arr,pre , l , idx-1,pi);
+        curr->right = recurr(arr,pre , idx+1 , r,pi);
+       
+        
+        return curr;
+    }
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) {
+        int idx = 0;
+        return recurr(inorder, preorder , 0 , inorder.size()-1, idx);
+    }
+};
