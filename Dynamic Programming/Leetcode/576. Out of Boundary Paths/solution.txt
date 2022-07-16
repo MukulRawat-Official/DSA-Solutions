@@ -1,0 +1,35 @@
+
+class Solution {
+public:
+    int m , n;
+    long long dp[55][55][55];
+    long long mod = 1e9 + 7;
+    vector<int>l = {0,1,0,-1} , r = {1,0,-1,0};
+    
+    long  long recurr(int i , int j , int c)
+    { 
+        
+        if(!i || !j || i>m || j>n) return 1;
+        if(!c) return  0;
+        
+        if(dp[i][j][c] != -1) return dp[i][j][c];
+        
+        
+        dp[i][j][c] = 0;
+       
+        
+        for(int k =0;k<4;k++)
+        dp[i][j][c] +=   (recurr(i + l[k] , j + r[k] , c-1) % mod);
+         
+        
+        
+        
+        return dp[i][j][c] % mod;
+    }
+    int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
+        this->m = m;
+        this->n = n;
+        memset(dp,-1,sizeof(dp));
+        return recurr(startRow + 1, startColumn + 1, maxMove) % mod;
+    }
+};
