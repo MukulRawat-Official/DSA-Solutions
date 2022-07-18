@@ -1,0 +1,68 @@
+/*
+the main idea is to find prefix sum of rows and column so point i , j represent sum upto i , j
+now travese through loop
+
+now at every row find prefix column sum elements (k loop in solution)
+ie sum of column from 0 - i , 1 - i .. i - i
+
+in this way we'll get get prefix sum of column k-i every time now
+generate all possibly for column and see it answer matches
+
+*/
+
+
+class Solution {
+public:
+int numSubmatrixSumTarget(vector<vector>& arr, int t) {
+
+	int n = arr.size() , m = arr[0].size();
+    for(int i =0;i<n;i++)
+    {
+        for(int j = 1;j<m;j++)
+            arr[i][j] += arr[i][j-1];
+    }
+    
+    for(int i =1;i<n;i++)
+    {
+        for(int j = 0;j<m;j++)
+            arr[i][j] += arr[i-1][j];
+        
+    } // i ,j represent now sum prefix sum of rows plus column ie sum of all elements upto i , j
+
+    
+  
+    int ans = 0;
+    for(int  i=0;i<n;i++) //main row loop
+    {
+        for(int k = 0;k<=i;k++)  // values of column sum from (0 - i) , (1 - i ), ( 2 - i) ... ( i - i)
+        {
+           vector<int>temp_arr;
+          
+            
+          for(int j=0;j<m;j++) // main column loop
+          {
+            int curr = arr[i][j];
+            if(k) curr -= arr[k-1][j]; 
+            temp_arr.push_back(curr);  //  prefix sum  (k - i) column sum
+          }
+           //  note here we get not only column sum of k-i but also prefix row sum 
+		   
+          for(int i =0;i<temp_arr.size();i++)  //finding all possible for current row and coumn sum (k - i)
+          {
+            for(int j = i;j>=0;j--)
+            {
+               int sum  =0;
+               if(j) sum = temp_arr[i] - temp_arr[j-1];
+               else sum = temp_arr[i];
+                
+               if(sum == t) ans++;
+            }
+          }
+       
+            
+        }    
+    }
+    
+    return ans;
+   }
+};
