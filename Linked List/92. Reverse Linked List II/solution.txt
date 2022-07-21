@@ -1,0 +1,64 @@
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+ /*
+   use brute force run till middle then reverse it and join list  
+ 
+ */
+typedef ListNode node;
+class Solution {
+public:
+    node* rev(node* head)
+    {
+        if(!head || head->next == NULL)
+            return head;
+        
+        node* temp = rev(head->next);
+        
+        head->next->next = head;
+        head->next = NULL;
+        
+        return temp;
+        
+    }
+    ListNode* reverseBetween(ListNode* head, int left, int right) {
+        
+        node* dummy = new node(0) , *curr_end = dummy;
+        dummy->next = head;
+        
+        for(int i =1;i<left;i++)
+        curr_end = curr_end ->next;    
+        node* curr =  curr_end ->next , *rev_head = curr;
+        
+        
+        for(int i = right - left ; i>0;i--)
+        curr = curr->next;
+        
+        
+        
+        node* last_end = curr->next;
+        curr->next = NULL;
+        
+        rev_head = rev(rev_head);
+        
+        cout<<rev_head->val;
+        
+        curr_end->next = rev_head;
+        
+        while(rev_head->next)
+            rev_head = rev_head->next;
+        
+        rev_head->next = last_end;
+        
+        return dummy->next;
+          
+        
+    }
+};
