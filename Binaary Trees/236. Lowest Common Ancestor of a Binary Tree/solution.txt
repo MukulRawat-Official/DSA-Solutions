@@ -1,0 +1,44 @@
+the main idea is when we get both node at first point (it will be lowest common ancestor)
+so we need to update our answer this point only.
+
+maintain a variable c (to count no of target nodes achieved ) in recursion
+
+now whenever we receive one of target node we update our c for current situation
+and call for left && right for next step with c == 0..
+we call with c = 0 beacause :-
+it ensure at next time when we'll receive a target node it will not be encountered as first node .
+
+eg:-                 1                           p = 6   q = 5
+          3                   5  (c = 1)  +  (c = 1 recieved from 6)  , ans = 5
+		7          9         6          2
+                           (call back with c = 1 )
+						   
+eg:-                1                p = 3  q =  5
+          3  (c = 1)          5 (c = 1)
+ 7              9         6                2
+ 
+ 1 with get c = 2 as it is first node c = 2 it will be our answer.
+typedef TreeNode node;
+class Solution {
+public:
+    node* ans = NULL;
+    int recurr(node* root , node* p , node* q , int c)
+    {
+        if(root == NULL || c == 2) return 0;
+        if(root == p) c++;
+        if(root == q) c++;
+        
+        if(root->left) c += recurr(root->left,p,q,0);
+        if(root->right) c += recurr(root->right,p,q,0);
+        
+        if(c == 2 && ans == NULL)
+        ans = root;
+        
+        return c;
+    }
+    
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        recurr(root,p,q,0);
+        return ans;
+    }
+};
