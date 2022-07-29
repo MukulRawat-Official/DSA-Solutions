@@ -1,0 +1,47 @@
+class Solution {
+public:
+    vector<string> findAndReplacePattern(vector<string>& words, string p) {
+        vector<string>ans;
+        
+        for(auto& x : words)
+        {
+            map<char,char>m;
+            int idx = 0;
+            bool poss = true;
+            vector<int>arr(26,0);
+            for(auto& t : x)
+            {
+                if(m.count(p[idx]))
+                {
+                   if(t != m[p[idx]])
+                   {
+                       poss = false;
+                       break;
+                   }
+                }
+                
+                
+                else
+                {
+                    if(arr[t-'a'])
+                    {
+                        poss = false;
+                        break;
+                    }
+                    m[p[idx]] = t;
+                    arr[t-'a']++;
+                    
+               }
+                idx++;
+            }
+            
+            
+            if(poss)
+            ans.push_back(x);
+        }
+        
+        return ans;
+        
+        
+    }
+};
