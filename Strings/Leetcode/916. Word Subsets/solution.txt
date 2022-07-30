@@ -1,0 +1,51 @@
+/*
+   for string to be universal its character frequency need to be maximum 
+   of all maximum a single character freqeunecy in string array b
+   we count max frequecy of single character in array b and store it in map.
+*/
+class Solution {
+public:
+    vector<string> wordSubsets(vector<string>& a, vector<string>& b) {
+        
+        int m = b.size();
+        unordered_map<char,int>fnl;
+        
+        for(auto& x : b)
+        {
+            unordered_map<char,int>t;
+            
+            for(auto& i : x)
+            t[i]++;
+            
+            for(auto& x : t)
+            {
+                char c = x.first;
+                fnl[c] = max(fnl[c] , x.second);
+            }
+        }
+        
+        vector<string>ans;
+        
+        for(auto& s : a)
+        {
+            unordered_map<char,int>t;
+            
+            for(auto& i : s) t[i]++;
+            ans.push_back(s);
+            
+            for(auto& i : fnl)
+            {
+                if(i.second > t[i.first])
+                {
+                    ans.pop_back();
+                    break;
+                }
+            }
+        }
+        
+        
+        return ans;
+        
+        
+    }
+};
