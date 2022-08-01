@@ -1,0 +1,51 @@
+/*
+  using frienwick tree...
+
+*/
+class NumArray {
+public:
+    vector<int>arr , nums;
+    int n;
+    NumArray(vector<int>& nums) {
+        n = nums.size();
+        this->nums = nums;
+        arr.resize(n+1,0);
+        
+        int idx = 1;
+        for(auto& x : nums)
+        updt(idx++,x);
+
+    } 
+    void update(int index, int val) { 
+        val = val - nums[index];
+        nums[index] += val;
+        updt(index+1,val);
+    }
+    
+    
+    void updt(int index , int val)
+    {
+        while(index <= n)
+        {
+            arr[index] += val;
+            index += index & -index;
+        }
+    }
+    
+    int get_val(int idx)
+    {
+        int sum = 0;
+        
+        while(idx)
+        {
+            sum += arr[idx];
+            idx -= (idx & -idx);
+        }
+        
+        return sum;
+    }
+    
+    int sumRange(int left, int right) {
+        return get_val(right+1) - get_val(left);
+    }
+};
