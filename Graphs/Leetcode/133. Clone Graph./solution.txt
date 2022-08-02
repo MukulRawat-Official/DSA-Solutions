@@ -1,0 +1,16 @@
+typedef Node node;
+class Solution {
+public:
+    map<node* , node*>m;
+    Node* cloneGraph(Node* root) {
+        if(!root) return root;
+        if(m.count(root)) return m[root];
+        
+        node* t = new node(root->val);
+        m[root] = t;
+        for(auto& x : root->neighbors)
+            t->neighbors.push_back(cloneGraph(x));
+        
+        return t;
+    }
+};
