@@ -1,0 +1,41 @@
+typedef Node node;
+class Solution {
+public:
+    Node* connect(Node* root) {
+       if(!root) return root;
+        
+        queue<node*>q;
+        q.push(root);
+        q.push(NULL);
+        while(q.size() > 1)
+        {
+            
+            vector<node*>arr;
+
+            node* curr = q.front();
+            q.pop();
+                
+                
+            while(curr){
+                arr.push_back(curr);
+                
+                if(curr->left) q.push(curr->left);
+                if(curr->right) q.push(curr->right);
+            
+                curr = q.front();
+                q.pop();
+            }
+            
+            node* prev = NULL;
+            for(auto it = arr.rbegin() ; it!= arr.rend();it++)
+            {
+                (*it)->next = prev;
+                prev = *it;
+            }
+            
+            q.push(NULL);
+        }
+        
+        return root;
+    }
+};
