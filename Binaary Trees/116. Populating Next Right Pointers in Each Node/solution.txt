@@ -1,0 +1,24 @@
+typedef Node node;
+class Solution {
+public:
+    node* dfs(node* root)
+    {
+        if(root == NULL) return NULL;
+        
+        auto right = dfs(root->right);
+        auto left = dfs(root->left);
+       
+        while(left)
+        {
+            left->next = right;
+            left = left->right;
+            right = right->left;
+        }
+        
+        return root;
+    }
+    
+    Node* connect(Node* root) {
+        return dfs(root);
+    }
+};
