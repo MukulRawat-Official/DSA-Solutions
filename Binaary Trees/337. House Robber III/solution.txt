@@ -1,0 +1,33 @@
+/*
+   there are two possibilty either we take current node;
+   1.> if we did so then we can't take next node   
+   2.> if we didn't take current node then we can take any other result in lower binary tree
+   
+   we'll mainatain pair one for taking current node and one for not takeing current node. 
+*/
+
+typedef TreeNode node;
+class Solution {
+public:
+    pair<int,int> dfs(node* root)
+    {
+        if(!root) {return {0,0};}
+        
+        auto left = dfs(root->left);
+        auto right = dfs(root->right);
+        
+        pair<int,int>ans = {root->val,0}; // include exclude
+        
+        ans.first += left.second + right.second; // value formed by taking current node and node taking next node
+        // not in above example child nodes are skipped.
+        ans.second =  max(left.first , left.second) + max(right.first , right.second); // if current value excludede then take any other descendant value.
+        
+        return ans;
+    }
+    int rob(TreeNode* root) {
+        
+        pair<int,int>ans = dfs(root);
+        
+        return max(ans.first,ans.second);
+    }
+};
