@@ -1,0 +1,125 @@
+/*
+      take array of n size and a pointer pointing to index 
+      zero at every element
+      
+      now for k-1 step find min indx and increment it by one.
+
+*/
+class Solution {
+public:
+    int kthSmallest(vector<vector<int>>& arr, int k) {
+    int n = arr.size();
+    vector<int>calc(n,0);
+    
+    while(k!=1)
+    {
+       k--;
+        
+       int minm = -1;
+        
+      for(auto&x : calc)
+      {
+          minm++;
+          if(x != n) break;
+      }
+        
+        
+     for(int j = minm + 1;j<n;j++)
+     {
+         if(calc[j] == n) continue;
+         if(arr[j][calc[j]] < arr[minm][calc[minm]])
+         minm = j;
+     }
+        
+      calc[minm]++;
+    }
+    
+    int ans = INT_MAX;
+    int idx = -1;
+    for(auto& x : calc)
+    {
+       idx++;
+       if(x == n) continue;
+        
+       ans = min(ans , arr[idx][x]);
+    } 
+     
+    return ans;
+ }
+};
+
+
+/*
+    above solution can be optimized using map we don't need to 
+    traverese through loop 
+    we can simply remove first element.
+*/
+
+class Solution {
+public:
+    int kthSmallest(vector<vector<int>>& arr, int k) {
+    int n = arr.size();
+    map<int,vector<pair<int,int>>>m;
+        
+    for(int i = 0;i<n;i++)
+    m[arr[0][i]].push_back({0,i});
+    
+    while(k!=1)
+    {
+      k--;
+      vector<pair<int,int>>& a = m.begin()->second;
+      
+          pair<int,int> t = *a.begin();
+          
+          if(a.size() == 1)
+          m.erase(m.begin()->first);
+          
+          else
+          a.erase(a.begin());
+        
+          t.first++;
+          if(t.first == n) continue;
+          m[arr[t.first][t.second]].push_back({t.first,t.second});
+    }
+    
+    auto it = m.begin()->second.begin(); 
+     
+    return arr[it->first][it->second];
+ }
+};
+
+/*
+   best implementatoion is using bianray search for every mid element
+   for every mid element we go for loop  for (i = 0 , n - 1)
+   and calc count of element less than or equal to it ... 
+   if its greater than k it will be our current answer..
+*/
+
+#define all(x,i) (x[i]).begin(), (x[i]).end() 
+class Solution {
+public:
+    int kthSmallest(vector<vector<int>>& arr, int k) {
+    int n = arr.size();
+    int l = arr[0][0] , h = arr[n-1][n-1];
+    int ans = 0;
+    while(l<=h)
+    {
+        long mid = (h+l)/2;
+        int cnt = 0;
+        for(int i = 0;i<n;i++)
+        cnt += upper_bound(all(arr,i),mid) - arr[i].begin();   
+        
+        if(cnt<k)
+            l = mid+1;
+        
+        else
+        {
+            ans = mid;
+            h = mid-1;
+        }
+    }
+        
+        
+    return ans;
+ }
+};
