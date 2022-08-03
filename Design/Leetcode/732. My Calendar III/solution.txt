@@ -1,0 +1,24 @@
+class MyCalendarThree {
+public:
+    map<int,int>m;
+    MyCalendarThree() {
+        
+    }
+    
+    int book(int start, int end) {
+        m[start]++;
+        m[end]--;
+        
+        int k = 0;
+        int cnt = 0;
+        for(auto& x : m)
+        {
+            cnt += x.second;
+            k = max(cnt,k);
+        }
+        
+        return k;
+    }
+};
+
+/**
