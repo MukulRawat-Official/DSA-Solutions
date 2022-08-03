@@ -1,0 +1,70 @@
+/*
+ using map
+*/
+class MyCalendar {
+public:
+    map<int,int>m;
+    MyCalendar() {
+        
+    }
+    
+    bool book(int start, int end) {
+       end--;
+        
+       auto it = m.lower_bound(start);
+       
+       
+        
+       if(it == m.end() || it->second > end)
+       {
+           m[end] = start;
+           return true;
+       }
+        
+       return false;
+        
+    }
+};
+
+/*
+ using vector 
+*/
+
+#define all(x)  (x).begin() , (x).end()
+class MyCalendar {
+public:
+    vector<int>arr;
+    MyCalendar() {
+        
+    }
+    
+    bool book(int start, int end) {
+        
+        end--;
+        auto it = lower_bound(all(arr),start);
+        
+        if(it!= arr.end() && *it == start) return false;
+        auto a = it - arr.begin();      
+        if(it == arr.end())
+        {
+            arr.push_back(start);
+            arr.push_back(end);
+            return true;
+        }
+
+        
+        if(a%2) return false;
+        
+        auto it2 = lower_bound(all(arr),end);
+        if(*it2 == end) return false;
+        if(it == it2)
+        {
+            arr.insert(arr.begin() + a, end);
+            arr.insert(arr.begin() + a,start);
+            return true;
+        }
+        
+        return false;
+        
+    }
+};
