@@ -1,0 +1,52 @@
+  we have give p and q;
+  p -> whole x axis
+  q -> partial / whole y axis
+  
+  since it is sqaure all side will be 'p'
+  
+  now to collide ar one corner  (p * k ) % q == 0
+  k = 1 , 2 , 3 .....  (k == no of reflections)
+  
+  eg:-  all sides are 3 cm and we get 1 cm as y 
+  now to reach one corner  need 3 * y  (k = 3 reflections)
+  
+  from above formaula we can be sure laser / ray will meet one end
+  now one point is where will ray meet upper or lower end. (end == floor)
+  
+  for that we'll calc
+  
+   (p * k) / q  = x (it indicate total length of veritacal axis needed)
+   
+   if (x is odd we'll be at upper corner)
+   else lower corner.
+   
+   here if   x  = 1, 3 , 5 ie odd it will meet at upper corner
+   else for even it will meet at lower corner  (ie 0 mirror)
+  
+   now for upper corner we can check by same formule 
+   by value of k
+   
+   for odd value of k -> it will meet at mirror 1 (it simple you can observe it from example)
+   for even value of k-> it wil meet at mirror 2
+  
+ 
+class Solution {
+public:
+ 
+     int mirrorReflection(int p, int q) {
+      
+     int k = 1;
+        
+     while(k * q % p)  // no of reflections
+        k++;
+        
+        
+     if( (k * q) / p % 2 == 0 ) return 0;   // it shows laser meet at lower end
+	 
+	 // for upper floor we can check by total no of reflections made
+	 
+     if(k%2) return 1;
+     return  2;
+     
+    }
+};
