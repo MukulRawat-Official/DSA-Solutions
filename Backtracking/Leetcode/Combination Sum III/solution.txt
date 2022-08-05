@@ -1,0 +1,23 @@
+class Solution {
+public:
+    vector<vector<int>>ans;
+    
+    void f(int k,int n,vector<int>&tmp , int idx)
+    {
+        if(!k && !n){ ans.push_back(tmp); return; }
+        if(!k || !n) return; 
+        
+        
+        for(int i = idx;i<=9;i++){
+             tmp.push_back(i);
+             f(k-1,n-i,tmp,i+1);
+             tmp.pop_back();
+        }
+        
+    }
+    vector<vector<int>> combinationSum3(int k, int n) {
+        vector<int>x;
+        f(k,n,x,1);
+        return ans;
+    }
+};
