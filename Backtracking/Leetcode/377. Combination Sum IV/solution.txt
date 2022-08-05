@@ -1,6 +1,21 @@
+/*
+Here we need to need to form all possible combination
+intially this problem can look as basic dp drop to find all combination
+the only diff here is that we can take a wieght again after moving forward in index.
+eg:- arr = [1,2,4] sum = 4
+
+ans = [1 1 2] , [1 2 1] ,[ 2 1 1] ...
+these all are valid answer now how to tackle it
+instead of calling for idx + 1 , we need to call from index '0' every time..
+now for base case we can sort array and when our sum is lesser than
+arr[0] we can say we can't form possible combination.
+now since only one index ie sum is changing so 1D memoization dp is required.
+Please upvote if you like my solution.
+*/
+
 class Solution {
 public:
-    vector<int>arr;
+    vector <int> arr;  
     int dp[1001];
     int n;
     long long f(int t)
