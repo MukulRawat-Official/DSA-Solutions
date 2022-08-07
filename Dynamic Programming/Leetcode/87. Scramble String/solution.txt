@@ -1,0 +1,44 @@
+to check substring are scrambled first we check letter frequency
+if frequency is not matched then we can't form it by scrambling
+
+now we'll scramle string
+from idx 1 to n-1;
+
+for eg :- string = " abcd "
+for one subpart one length one we can scrable in
+-> (a bcd ) (abc d) two diff ways so we'll check for
+
+subtring (0 , idx-1) (idx , end);
+(end-idx) (0,end-idx);
+
+we use map to store intermediate result where we use key
+-> s1 + s2.
+
+class Solution {
+public:
+    map<string,bool>h;
+    bool isScramble(string s1, string s2) {
+        map<char,int>m;
+        
+        if(h.count(s1+s2)) return h[s1+s2];
+        for(auto& x : s1) m[x]++;
+        for(auto& x : s2) m[x]--;
+        
+        if(s1 == s2) return h[s1+s2] = true;
+        for(auto& x : m) if(x.second) return h[s1+s2] = false;
+        
+        for(int i = 1;i<s1.size();i++)
+        {
+            h[s1+s2] |= (isScramble(s1.substr(0,i), s2.substr(0,i)) && isScramble(s1.substr(i), s2.substr(i)));
+            
+            h[s1+s2] |= (isScramble(s1.substr(0,i), s2.substr(s2.size()-i)) && isScramble(s1.substr(i), s2.substr(0,s2.size()-i)));
+            
+            if(h[s1+s2]) return true;
+        }
+        
+        
+        return h[s1+s2];
+        
+       
+    }
+};
