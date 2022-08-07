@@ -1,0 +1,79 @@
+/*
+  recursive method ... 
+*/
+class Solution {
+public:
+    int mod;
+    map<char,vector<int>>m;
+    map<pair<int,char>,long long>dp; 
+    long long f(int n , char prev)
+    {
+        if(!n) return 1;
+        
+        if(dp.count({n,prev})) return dp[{n,prev}];
+        
+        dp[{n,prev}] = 0;
+        vector<int>& tmp = m[prev];
+        
+        for(auto& x : tmp)
+        dp[{n,prev}] += f(n-1,x) % mod;
+        
+        return dp[{n,prev}] % mod;        
+        
+    }
+    int countVowelPermutation(int n) {
+        m['a'].push_back({'e'});
+        m['e'].push_back({'a'});         m['e'].push_back({'i'});
+        m['i'].push_back({'a'});         
+        m['i'].push_back({'e'});
+        m['i'].push_back({'o'});
+        m['i'].push_back({'u'}); 
+                                 
+        m['o'].push_back({'i'});         m['o'].push_back({'u'});
+        m['u'].push_back({'a'});
+        m['z'].push_back({'a'});         
+        m['z'].push_back({'e'});
+        m['z'].push_back({'i'});
+        m['z'].push_back({'o'});
+        m['z'].push_back({'u'}); 
+    
+        mod = 1e9 + 7;
+        
+        return f(n,'z');
+    }
+};
+
+/*
+     tabular method ....
+*/
+
+
+class Solution {
+public:
+    int countVowelPermutation(int n) {
+        
+        if(n == 1)
+          return 5;
+        
+        long long dp[5] = {0,0,0,0,0} , prev[5] = {1,1,1,1,1};
+        int mod = 1e9 + 7;
+        int a = 0 , e = 1 , i = 2 , o = 3 , u = 4;
+        
+        for(int k = 1;k<n;k++)
+        {
+           dp[a] = prev[e] % mod;
+           dp[e] = (prev[a] + prev[i]) % mod;
+           dp[i] = (prev[a] +  prev[e] + prev[o] +  prev[u]) % mod;
+           dp[o] = (prev[i] + prev[u]) % mod;
+           dp[u] = prev[a] % mod;
+           
+           for(int i = 0;i<5;i++)
+              prev[i] = dp[i];
+        }
+        
+        long long sum = (prev[a] + prev[e] + prev[i] + prev[o] + prev[u]) % mod;
+        
+        return sum;
+        
+    }
+};
