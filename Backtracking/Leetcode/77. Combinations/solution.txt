@@ -1,0 +1,32 @@
+class Solution {
+public:
+    vector<vector<int>>ans;
+    int n , k;
+    void recurr(vector<int>&tmp, int idx)
+    {
+       if(tmp.size() == k)
+       {
+           ans.push_back(tmp);
+           return;
+       }
+        if(idx > n)
+           return;
+        
+      recurr(tmp,idx+1);
+    
+      if(tmp.size()<k)
+      {
+          tmp.push_back(idx);
+          recurr(tmp,idx+1);
+          tmp.pop_back();
+      }    
+        
+    }
+    vector<vector<int>> combine(int n, int k) {
+     this->n = n;   
+     this->k = k;
+        vector<int>x;
+      recurr(x,1);
+      return ans;
+     }
+};
