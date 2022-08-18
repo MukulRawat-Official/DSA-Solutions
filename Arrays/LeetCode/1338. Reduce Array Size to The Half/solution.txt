@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int minSetSize(vector<int>& arr) {
+        int n = arr.size() , k = n;
+        map<int,int> m , f;
+        for(auto& x : arr)
+            m[x]++;
+        
+        for(auto& x : m)
+            f[x.second]++;
+        
+        int ans = 0;
+        
+        while(k>n/2)
+        {
+            auto it = f.rbegin();
+            k -= it->first;
+            
+            if(it->second > 1)
+                it->second--;
+            
+            else
+                f.erase(it->first);
+            
+            ans++;
+        }
+        
+        return ans;
+    }
+};
