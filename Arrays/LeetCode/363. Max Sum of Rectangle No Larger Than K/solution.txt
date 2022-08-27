@@ -1,0 +1,125 @@
+/*
+  Naive solution will be to look for all possible segments in arr and find max sum
+  Time complexity of naive solution will be O( (n*m) ^ 2 )
+ 
+  class Solution {
+public:
+    int calc(vector<vector<int>>&arr,int sx,int sy,int ex,int ey)
+    {
+        int sum = arr[ex][ey];
+        if(sx)
+        sum -= arr[sx-1][ey];
+        
+        if(sy)
+        sum -= arr[ex][sy-1];
+        
+        if(sx && sy)
+        sum += arr[sx-1][sy-1];
+        
+        return sum;
+    }
+    
+    int maxSumSubmatrix(vector<vector<int>>& arr, int k) {
+     int n = arr.size(), m = arr[0].size();
+
+      for(int i = 0;i<n;i++)
+        for(int j = 1;j<m;j++)
+          arr[i][j] += arr[i][j-1];
+      
+      for(int i = 1;i<n;i++)
+        for(int j =0;j<m;j++)
+            arr[i][j] += arr[i-1][j];
+    
+       int ans = INT_MIN;
+        
+       for(int l = 1;l<=n;l++) // length of piece taken
+       {
+         for(int w = 1;w<=m;w++) // width needed 
+         {
+            for(int i = 0 ;i<n-(l-1);i++) // row loop
+            {
+               for(int j = 0;j<m-(w-1);j++) // column loop
+               {
+                   int sum = 0, sx = i , sy = j , ex = i + (l-1) , ey = j + (w-1);
+                   sum = calc(arr,sx,sy,ex,ey);
+                   if(sum <= k)
+                       ans = max(sum,ans);
+               }
+             
+            }
+             
+         } // width end
+      } // loop end
+        
+      return ans;
+      
+    }
+};
+*/
+
+/*
+   Optimized soltuion
+   :-
+   
+   2 Step Approach :-
+   
+   1.> Let change this question to find max sum in array
+   
+   -> solution for that we'll traverse through each subarray of each row
+   while calc each sub array we'll create a array for column and store that subarray result in that column
+   we can use kadane to find max sum in column for that sub array.
+   
+   TC:- O(  M ^ 2) (for each subarray) * ( O(N)(for running each row) + O(N)  KADANE )
+    -> O(M ^ 2 * N)
+    
+   2.> for max sum upto k we'cant use kadane we can find solution in n log n time by using below appraoch
+   let max sum <=  (i,j]    = sum upto (j) - sum upto (i);
+   
+   run a loop form left to right
+   
+   store cum_sum = total sum upto i  and keep storing sum at each step in set.
+   
+   at each step   curr_sum - some previosum sum  <= k 
+   
+   or   curr_sum - k <= some previous sum;
+
+   so we'll search  (curr_sum - k) in set.a
+   
+   TC = O (M^2  * N LOG N )
+*/
+
+class Solution {
+public:
+    long max(long a , long b){
+        if(a>b) return a;
+        return b;
+    }
+    int maxSumSubmatrix(vector<vector<int>>& arr, int k) {
+        int n = arr.size() , m = arr[0].size();
+        int ans = INT_MIN;
+        
+        for(int  l = 0;l<m;l++)
+        {
+            vector<long>sum(n,0);
+            for(int r = l;r<m;r++)
+            {
+                
+                for(int  i = 0;i<n;i++)
+                sum[i] += arr[i][r];
+                
+                set<long>s; s.insert(0);
+                long cum  =0;
+                
+                for(int i = 0;i<n;i++)
+                {
+                    cum += sum[i];
+                    auto it = s.lower_bound(cum - k);
+                    if(it != s.end()) ans = max(ans,cum - *it);
+                    s.insert(cum);
+                }
+            }
+        }
+        
+        return ans;
+    }
+};
