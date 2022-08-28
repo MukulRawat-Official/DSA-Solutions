@@ -1,0 +1,76 @@
+/*
+    toplogical sort as we require one thing to perform before another.
+*/
+class Solution {
+public:
+  
+    
+    vector<int>rr,cc;
+    bool is_row;
+    bool chk(vector<vector<int>>&arr)
+    {
+        int n = arr.size();
+        vector<int>deg(n,0) , ans;
+        queue<int>q;            
+        for(int i = 1;i<n;i++)
+        {
+            for(auto& x : arr[i])
+            deg[x]++;
+        }
+        
+        for(auto x = 1;x<deg.size();x++){
+            if(deg[x] == 0) {q.push(x);ans.push_back(x);}
+        }
+        
+        while(q.size())
+        {
+            int e = q.front();
+            q.pop();
+            
+            for(auto& x : arr[e])
+            {
+                deg[x]--;
+                if(deg[x] == 0)
+                {q.push(x); ans.push_back(x);}
+                
+            }
+        }
+        
+        if(is_row) rr = ans; 
+        else cc = ans; 
+        is_row = 0;
+
+        return ans.size() == n-1; 
+        
+    }
+    vector<vector<int>> buildMatrix(int k, vector<vector<int>>& row, vector<vector<int>>& col) {
+      int n = row.size() , m = col.size();
+      is_row = 1;
+        
+      vector<vector<int>>rg(k+1) , cg(k+1);
+        
+     for(auto& x : row)
+         rg[x[0]].push_back(x[1]);
+        
+     for(auto& x : col)
+         cg[x[0]].push_back(x[1]);
+     
+     if( !chk(rg)  || !chk(cg)) return {};
+     
+     map<int,int>mr,mc;
+      
+     for(auto x = 0; x < rr.size();x++)
+     mr[rr[x]] = x;
+     
+     for(auto x = 0; x<cc.size();x++)
+     mc[cc[x]] = x;
+     
+     vector<vector<int>>ans(k,vector<int>(k,0));
+        
+     for(int i = 1;i<=k;i++)
+         ans[mr[i]][mc[i]] = i;
+    
+     return ans;
+        
+    }
+};
