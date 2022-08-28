@@ -1,0 +1,44 @@
+class Solution {
+public:
+    vector<vector<int>> diagonalSort(vector<vector<int>>& arr) {
+        int n = arr.size() , m = arr[0].size();
+        
+        for(int i = 0;i<n;i++)
+        {
+            int r = 0 , x = i;
+            vector<int>tmp;
+            while(x<n && r<m)
+            tmp.push_back(arr[x++][r++]);
+            
+            sort(tmp.rbegin(),tmp.rend());
+            r = 0 , x = i;
+            
+            while(x<n && r<m)
+            {
+                arr[x++][r++] = tmp.back();
+                tmp.pop_back();
+            }
+        }
+        
+        for(int i = 1;i<m;i++)
+        {
+            vector<int> tmp;
+            int l = 0 , y = i;
+            
+            while(l<n && y<m)
+            tmp.push_back(arr[l++][y++]);
+            
+            sort(tmp.rbegin(),tmp.rend());
+            l = 0 , y = i;
+            
+            while(l<n && y<m)
+            {
+                arr[l++][y++] = tmp.back();
+                tmp.pop_back();
+            }
+        }
+        
+        return arr;
+        
+    }
+};
