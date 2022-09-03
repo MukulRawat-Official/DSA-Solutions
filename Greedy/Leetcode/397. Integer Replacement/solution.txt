@@ -1,0 +1,25 @@
+class Solution {
+public:
+    int integerReplacement(long n) {
+        int c = 0;
+        
+        while(n > 1)
+        {
+            if(n%2)
+            {
+                long r = n+1 , l  = n-1;
+                r/=2;
+                l/=2;
+                
+                if(l == 1) n = l * 2;
+                else if(r % 2) n = l*2;
+                else n = r*2;
+                
+            }
+            else n/=2;
+            c++;
+        }
+        
+        return c;
+    }
+};
