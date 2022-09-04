@@ -1,0 +1,36 @@
+typedef TreeNode node;
+class Solution {
+public:
+    map<int,multiset<node*>>mp;
+    map<node*,int> mh;
+    void recurr(node* root,int p,int h)
+    {
+        if(root == NULL) return;
+        mp[p].insert(root);
+        mh[root] = h;
+        
+        recurr(root->left,p-1,h-1);
+        recurr(root->right,p+1,h-1);
+     }
+    vector<vector<int>> verticalTraversal(TreeNode* root) {
+      vector<vector<int>>ans;
+        recurr(root,0,0);
+        for(auto& x : mp)
+        {
+           vector<node*>t;
+            
+            for(auto& y : x.second) t.push_back(y);
+            sort(t.begin(),t.end(),[&](node* a, node* b)
+                 {
+                    if(mh[a] == mh[b]) return a->val < b->val;
+                     return mh[a] > mh[b];
+                 });
+            vector<int>k;
+            for(auto x : t){ k.push_back(x->val);}
+            ans.push_back(k);
+        }
+        
+       
+        return ans;
+    }
+};
