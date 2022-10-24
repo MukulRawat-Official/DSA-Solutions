@@ -1,6 +1,6 @@
 class Solution {
 public:
-    int f(vector<string>&arr , int idx , map<char,int>m)
+    int f(vector<string>&arr , int idx , map<char,int>&m)
     {
         if(idx == arr.size()) return 0;
         int ans = f(arr,idx+1,m);
@@ -9,12 +9,18 @@ public:
         bool ft = 0;
         int c = 0;
         
-        for(auto& x : t) {if(m.count(x)) {ft = 1; break;}
-         m[x]; c++;
+        for(auto& x : t) {if(m.count(x)) ft = 1; 
+         m[x]++; c++;
         }
         
         if(!ft)
         ans = max(ans,f(arr,idx+1,m)+c);
+        
+        for(auto& x : t)
+        {
+            if(m[x] == 1) m.erase(x);
+            else m[x]--;
+        }
         
         return ans;
         
