@@ -14,33 +14,23 @@ public:
                 if(arr[i][j] == 1 && arr[i][j+1] == -1){
                     vis[i][j] = -2;
                     vis[i][j+1] = -2;
-                    j++;
                 } 
+        
         }
  
-     
-       
         for(int i = 0;i<n;i++)
         {
           for(int j = 0;j<m;j++){
-              // cout<<vis[i][j]<<" ";
+             
               if(!vis[i][j] || vis[i][j] == -2) continue;
               int y = j + arr[i][j];
-              if(y>=0 && y<m){
+              
+              if(y>=0 && y<m && vis[i+1][y] != -2){
                  vis[i+1][y] = vis[i][j];
-                  
-                 if(i<n-1 && arr[i+1][y] == 1 && y<m-1 && arr[i+1][y+1] == -1)
-                     vis[i+1][y] = 0;
-                 else if(i<n-1 && arr[i+1][y] == -1 && y>0 && arr[i+1][y-1] == 1)
-                     vis[i+1][y] = 0;
               }
           }
         }
         
-        // for(int i =0 ;i<=n;i++){
-        //     for(int j = 0;j<m;j++) cout<<vis[i][j]<<" ";
-        //     cout<<endl;
-        // }
         
         vector<int>res(m,-1);
         
