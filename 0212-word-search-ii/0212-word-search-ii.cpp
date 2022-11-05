@@ -1,60 +1,72 @@
-class Node{  //*** trie Node
-    public:
-        string word;
-        bool isTerminal;  
-        vector<Node*> next;
-        Node():next(26,NULL){
-            isTerminal = false; 
-            
-        }
-};
-
 class Solution {
-    
-    void put(string &s,int si, Node* cur){ //** adds a word to the trie 
-            int a = s[si]-'a';    //*********** also stores the word at the terminal node
-            if(!cur->next[a]){
-            Node* newnode = new Node();
-            cur->next[a] = newnode;
-            }
-
-            if(si != s.size()-1){
-            put(s,si+1,cur->next[a]); }
-            else
-             { cur->next[a]->isTerminal = true;
-               cur->next[a]->word = s;
-              }
-      }
-
-void dfs(vector<vector<char>>& board,int i,int j,Node* t,set<string>& res,vector<vector<bool>>& visit){ 
-    if(i<0 || j<0 || i>=board.size() || j>= board[0].size())return; //** dfs call to search for word
-    char x = board[i][j]-'a';
-    t = t->next[x];
-    if(visit[i][j] || !t)return ;
-   
-    if(t->isTerminal)res.insert((t->word));
-    visit[i][j] = true;
-    dfs(board,i+1,j,t,res,visit);
-    dfs(board,i-1,j,t,res,visit);
-    dfs(board,i,j+1,t,res,visit);
-    dfs(board,i,j-1,t,res,visit);
-    visit[i][j]= false;
-}
-
 public:
-    vector<string> findWords(vector<vector<char>>& board, vector<string>& words) {
-        set<string> res;
-        Node* t = new Node();
-        for(string &s:words){
-            put(s,0,t);
-        }
-       vector<vector<bool>> visit(board.size(),vector<bool>(board[0].size(),false));
-        for(int i = 0 ;i<board.size();i++){
-            for(int j=0;j<board[0].size();j++){
-               dfs(board,i,j,t,res,visit);
+    struct node{
+      vector<node*>arr;
+      bool nl = true; 
+      
+      node(){
+          arr.resize(26,NULL);
+      }
+    };
+    vector<int> l = {1,0,-1,0} , r = {0,1,0,-1};
+    vector<string>ans;
+    int n , m;
+    void recurr(vector<vector<char>>& board, vector<vector<bool>>& vis, node* head , int i , int j , string& curr)
+    {
+      if(i == n || j == m) return;
+      if(head->nl == false){
+       ans.push_back(curr);
+       head->nl = true;
+      }
+      
+      for(int k = 0;k<4;k++){
+          int x = l[k] + i , y = j + r[k];
+          if(x>=0 && x < n && y>=0 && y<m && !vis[x][y] && head->arr[board[x][y] - 'a']){
+            node* tmp = head->arr[board[x][y] - 'a'];
+            vis[x][y] = 1;
+            curr.push_back(board[x][y]);
+            recurr(board,vis,tmp,x,y,curr);
+            vis[x][y] = 0;
+            curr.pop_back();
+          }
+      }
+        
+    }
+    
+    vector<string> findWords(vector<vector<char>>& board, vector<string>& words)     {
+       node* head = new node();
+       head->nl = true; 
+       for(auto& x : words){
+            node* curr = head;
+            
+            for(auto& t : x){
+                if(curr->arr[t-'a'])
+                    curr = curr->arr[t-'a'];
+                else{
+                  node* tmp = new node();
+                  curr->arr[t-'a'] = tmp;
+                  curr = tmp;
+                }
             }
-        }
-        vector<string> ans(res.begin(),res.end());
+            
+            curr->nl = false;
+        }       
+       n = board.size();
+       m = board[0].size();
+       vector<vector<bool>>vis(n,vector<bool>(m,0));
+       string curr = "";
+       for(int i = 0;i<n;i++){
+       for(int j = 0;j<m;j++){
+           if(head->arr[board[i][j] - 'a']){
+               curr.push_back(board[i][j]);
+               vis[i][j] = 1;
+               recurr(board,vis,head->arr[board[i][j] - 'a'],i,j,curr);
+               vis[i][j] = 0;
+               curr.pop_back();
+           }
+          }
+       }
+        
        return ans;
     }
 };
