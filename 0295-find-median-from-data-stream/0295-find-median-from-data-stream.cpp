@@ -1,33 +1,40 @@
 class MedianFinder {
 public:
-    multiset<int>s;
-    multiset<int>::iterator it;
+    priority_queue<int> mxhp;
+    priority_queue<int,vector<int> , greater<int>> mnhp;
+    bool even = true;
     MedianFinder() {
         
     }
     
     void addNum(int num) {
-        s.insert(num);
-        if(s.size() == 1) it = s.find(num);
-        else if(num < *it){
-            if(s.size() % 2 == 0) it--;
+        even = !even;
+        
+        if(mxhp.size() == 0){ mxhp.push(num); return; }
+        if(mnhp.size() == 0){
+            int a = min(num,mxhp.top());
+            int b = max(num,mxhp.top()); mxhp.pop();
+            mxhp.push(a);
+            mnhp.push(b);
+            return; 
         }
-        else if(num >= *it){
-            if(s.size() % 2) it++;
+        if(!even) {
+            mnhp.push(num);
+            mxhp.push(mnhp.top());
+            mnhp.pop();
         }
         
-        // for(auto& x : s) cout<<x<<" ";
-        // cout<<"Middle = "<<*it;
-        // cout<<endl;
+        else
+        {
+            mxhp.push(num);
+            mnhp.push(mxhp.top());
+            mxhp.pop();
+        }
     }
     
     double findMedian() {
-      double  ans = *it;
-      auto it2 = it;
-      if(s.size() % 2 == 0) {it2++;
-       ans += *it2; ans/=2;
-        }
-      return ans;  
+        if(even) return (mxhp.top() + mnhp.top()) * 1.0 / 2;
+        else return mxhp.top();
     }
 };
 
