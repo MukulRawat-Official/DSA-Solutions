@@ -1,24 +1,19 @@
 class Solution {
 public:
-    int dp[5001][301];
-    int recurr(vector<int>&coins, int amount , int idx){
-        if(amount<0) return 0;
-        if(!amount) return 1;
-        if(idx == coins.size()) return 0;
-        if(dp[amount][idx] != -1) return dp[amount][idx];
-        int ans = recurr(coins,amount,idx+1);
-        
-        ans += recurr(coins,amount - coins[idx] ,idx);
-        
-        return dp[amount][idx] = ans;
-        
-    }
     int change(int amount, vector<int>& coins) {
-        memset(dp,-1,sizeof(dp));
-        sort(coins.begin(),coins.end());
-        int ans = recurr(coins,amount,0);
-        // for(int i = 0;i<6;i++) cout<<dp[i]<<" ";
-        // cout<<endl;
-        return ans;
+        int n = coins.size();
+        int dp[amount+1][coins.size()+1];
+        for(int i = 0;i<=n;i++){dp[0][i] = 1;}
+        for(int j = 1;j<=amount;j++) dp[j][0] = 0;
+        for(int i = 1;i<=amount;i++){
+           for(int j = 1;j<=n;j++) // idx;
+           {
+                int idx = j - 1;
+                dp[i][j] = dp[i][j-1];
+                if(coins[idx]<= i) dp[i][j] += dp[i-coins[idx]][j]; 
+           }
+        }
+        
+        return dp[amount][n];
     }
 };
