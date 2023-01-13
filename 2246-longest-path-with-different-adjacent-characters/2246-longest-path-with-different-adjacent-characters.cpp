@@ -13,20 +13,18 @@ public:
 
             pair<int,int>  tmp = dfs(x);
             
-            if(s[x] == ch){
-                         
-            }
-            else{
-            if(ans == 0)  ans = tmp.first;
-            else if(ans2 == 0){
-                ans2 = min(ans,tmp.first);
-                ans = max(ans,tmp.first);
-            }
-            else if(tmp.first >= ans){
-                swap(ans,ans2);
-                ans = tmp.first;
-            }
-            else if(tmp.first>= ans2)    ans2 = tmp.first;
+            if(s[x] != ch)
+            {
+               if(ans == 0)  ans = tmp.first;
+               else if(ans2 == 0){
+                  ans2 = min(ans,tmp.first);
+                  ans = max(ans,tmp.first);
+                }
+               else if(tmp.first >= ans){
+                  swap(ans,ans2);
+                   ans = tmp.first;
+                  }
+               else if(tmp.first>= ans2)    ans2 = tmp.first;
             }
             curr_two_max = max(curr_two_max,tmp.second);
             
@@ -45,7 +43,7 @@ public:
         this->s = s;
         
         pair<int,int>tmp =  dfs(0);
-        return max(tmp.first,tmp.second);
+        return tmp.second;
         
     }
 };
