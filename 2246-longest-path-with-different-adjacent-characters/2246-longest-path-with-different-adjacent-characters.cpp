@@ -42,8 +42,6 @@ public:
         }
         this->s = s;
         
-        pair<int,int>tmp =  dfs(0);
-        return tmp.second;
-        
+        return  dfs(0).second;
     }
 };
