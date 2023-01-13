@@ -3,34 +3,22 @@ public:
     vector<vector<int>>adj;
     int n;
     string s;
-    int ans = 0;
+
     pair<int,int> dfs(int curr){
         char ch = s[curr];
-        int ans = 0;
-        int ans2 = 0;
+        vector<int>arr(2,0);
         int curr_two_max = 0;
+
         for(auto& x : adj[curr]){
 
             pair<int,int>  tmp = dfs(x);
-            
             if(s[x] != ch)
-            {
-               if(ans == 0)  ans = tmp.first;
-               else if(ans2 == 0){
-                  ans2 = min(ans,tmp.first);
-                  ans = max(ans,tmp.first);
-                }
-               else if(tmp.first >= ans){
-                  swap(ans,ans2);
-                   ans = tmp.first;
-                  }
-               else if(tmp.first>= ans2)    ans2 = tmp.first;
-            }
+              for(auto& x : arr)    if(tmp.first>=x) swap(x,tmp.first);
             curr_two_max = max(curr_two_max,tmp.second);
-            
-        }
-        curr_two_max = max(curr_two_max , ans + ans2 + 1);
-        return {ans + 1,curr_two_max};
+         }
+        curr_two_max = max(curr_two_max , arr[0] + arr[1] + 1);
+        
+        return {arr[0] + 1,curr_two_max};
     }
     int longestPath(vector<int>& parent, string s) {
         n = parent.size();
