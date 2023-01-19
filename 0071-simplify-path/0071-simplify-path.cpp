@@ -26,13 +26,13 @@ public:
         string ans = "";
         
         while(st.size()) {
-            rev.push(st.top());
+            string s = st.top();
             st.pop();
+            reverse(s.begin(),s.end());
+            ans += s;
         }
-        while(rev.size()){
-            ans += rev.top();
-            rev.pop();
-        }
+        reverse(ans.begin(),ans.end());
+   
         if(ans.size() > 1)ans.pop_back();
         return ans;
     }
