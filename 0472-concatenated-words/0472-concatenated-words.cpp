@@ -1,7 +1,7 @@
 class Solution {
 public:
     vector<string> findAllConcatenatedWordsInADict(vector<string>& words) {
-        unordered_set<string> words_set;
+        set<string> words_set;
         for (string word : words) words_set.insert(word);
         vector<string> res;
     
