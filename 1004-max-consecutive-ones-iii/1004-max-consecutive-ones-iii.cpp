@@ -4,8 +4,7 @@ public:
      int l = 0 , n = nums.size();
      int ans = 0 , one = 0;
      for(int i = 0;i<n;i++){
-         if(nums[i] == 1)    one++;
-         else k--;
+         if(!nums[i]) k--;
          
          while(k<0){
              if(nums[l] == 0)k++;
