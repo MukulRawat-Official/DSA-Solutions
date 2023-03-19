@@ -27,7 +27,7 @@ public:
           bool ans = false;
           if(word[idx] == '.'){
               for(int i = 0;i<26;i++) {
-                if(tmp->arr[i]) ans |= give(tmp->arr[i] , idx+1 , give);  
+                if(tmp->arr[i]) if(give(tmp->arr[i] , idx+1 , give)) return true;  
               }
           }
             
