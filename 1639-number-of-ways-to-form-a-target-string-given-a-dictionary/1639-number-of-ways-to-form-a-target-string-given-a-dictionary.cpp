@@ -1,5 +1,6 @@
 class Solution {
 public:
+    long dp[1001][1001];
     int numWays(vector<string>& s, string target) {
   
         int m = s[0].size();
@@ -16,8 +17,9 @@ public:
         */
         
         int mod = 1e9 + 7;
-        long dp[m + 1][target.size() + 1];
-        memset(dp,-1,sizeof(dp));
+        
+        for(int i = 0;i<m;i++)   
+          for(int j = 0;j<target.size();j++) dp[i][j] = -1;
         
         vector<vector<int>>arr(26,vector<int>(m,0));
         for(int j = 0;j<m;j++){
