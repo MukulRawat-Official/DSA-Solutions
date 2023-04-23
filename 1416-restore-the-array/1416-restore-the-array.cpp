@@ -1,10 +1,10 @@
 class Solution {
 public:
-    long dp[100001];
+    long dp[(int)1e5 + 1];
     int numberOfArrays(string s, int k) {
        int n = s.size();
        int mod = 1e9 + 7;
-       memset(dp,-1,sizeof(dp));
+       for(int i = 0;i<n;i++) dp[i] = -1;
        auto recurr = [&](int idx  , auto&& recurr)->long{
            if(idx == s.size()) return 1;
            if(s[idx] == '0') return 0;
