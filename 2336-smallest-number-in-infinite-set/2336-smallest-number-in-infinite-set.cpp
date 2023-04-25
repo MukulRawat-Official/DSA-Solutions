@@ -1,25 +1,23 @@
 class SmallestInfiniteSet {
 public:
-    vector<int>arr;
+    set<int>st;
+
     SmallestInfiniteSet() {
-        arr.resize(1001,1);
+     
     }
     
     int popSmallest() {
-        int ans;
-        for(int i = 1;i<=1000;i++){
-            if(arr[i]){
-                arr[i] = 0;
-                ans = i;
-                break;
-            }
+        int ans = 1;
+        for(auto& x : st){
+            if(x == ans) ans++;
+            else break;
         }
-        
+        st.insert(ans);
         return ans;
     }
     
     void addBack(int num) {
-        arr[num] = 1;
+        if(st.count(num)) st.erase(num);
     }
 };
 
