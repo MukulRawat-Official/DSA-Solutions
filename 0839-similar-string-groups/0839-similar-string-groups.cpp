@@ -26,7 +26,7 @@ public:
         for(int i = 0;i<n;i++){
             for(int j = i+1;j<n;j++){
               int cnt = 0;
-              if(find(i) == find(j)) continue;
+             
                 
               for(int k = 0;k<m && cnt < 3;k++){
                    cnt += (arr[i][k] != arr[j][k]);    
