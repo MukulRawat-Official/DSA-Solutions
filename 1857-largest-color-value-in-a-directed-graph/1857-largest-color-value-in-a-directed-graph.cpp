@@ -1,40 +1,37 @@
 class Solution {
 public:
- int largestPathValue(string colors, vector<vector<int>>& edges) {
+    int largestPathValue(string colors, vector<vector<int>>& edges) {
         int n = colors.size();
-        vector<int> indegrees(n, 0);
-        vector<vector<int>> graph(n, vector<int>());
-        for (vector<int>& edge : edges) {
-            graph[edge[0]].push_back(edge[1]);
-            indegrees[edge[1]]++;
+        vector<vector<int>>adj(n);
+        vector<int>inc(n,0);
+        vector<vector<int>>clrs(n,vector<int>(26));
+        for(auto& x : edges){
+            adj[x[0]].push_back(x[1]);
+            inc[x[1]]++;
         }
-        queue<int> zero_indegree;
-        for (int i = 0; i < n; i++) {
-            if (indegrees[i] == 0) {
-                zero_indegree.push(i);
+        
+        queue<int>q;
+        
+        for(int i = 0;i<n;i++) {
+             clrs[i][colors[i]-'a']++;
+            if(!inc[i]) q.push(i);
+        }
+        
+        int ans = 1 , curr;
+        if(q.size())
+        while(q.size()){
+            curr = q.front(); q.pop();
+            ans = max(ans,clrs[curr][colors[curr] - 'a']);
+            
+            for(auto& x : adj[curr]){
+                if(!inc[x]) return -1;
+                inc[x]--;
+                for(int i = 0;i<26;i++) clrs[x][i] = max(clrs[curr][i] + (colors[curr] - 'a' == i) , clrs[x][i]);
+                if(!inc[x]) q.push(x);
             }
         }
-        vector<vector<int>> counts(n, vector<int>(26, 0));
-        for (int i = 0; i < n; i++) {
-            counts[i][colors[i] - 'a']++;
-        }
-        int max_count = 0;
-        int visited = 0;
-        while (!zero_indegree.empty()) {
-            int u = zero_indegree.front();
-            zero_indegree.pop();
-            visited++;
-            for (int v : graph[u]) {
-                for (int i = 0; i < 26; i++) {
-                    counts[v][i] = max(counts[v][i], counts[u][i] + (colors[v] - 'a' == i ? 1 : 0));
-                }
-                indegrees[v]--;
-                if (indegrees[v] == 0) {
-                    zero_indegree.push(v);
-                }
-            }
-            max_count = max(max_count, *max_element(counts[u].begin(), counts[u].end()));
-        }
-        return visited == n ? max_count : -1;
+        for(auto& x : inc) if(x) ans = -1;
+        return ans;
+        
     }
 };
