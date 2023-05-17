@@ -15,7 +15,8 @@ public:
         ListNode* tmp = rev(head->next);
         tmp->next = head;
         head->next = NULL;
-        return head;  }
+        return head;  
+    }
     int pairSum(ListNode* head) {
         ListNode* slow = head , *fast = head , *tail;
         
@@ -28,7 +29,7 @@ public:
          slow = rev(slow);
         
         int ans = 0;
-        while(head != slow){
+        while(tail){
             ans = max(ans , tail->val + head->val);
             tail = tail->next;
             head = head->next;
