@@ -6,7 +6,11 @@ public:
        for(int i = k;i<sz;i++) dp[i] = 1;
        if(k){
            dp[k-1] = (sz - k) * 1. / maxPts;
-       }
+       } 
+        
+        // initial commit is necessary to apply sliding window as  from k all are 
+        // base cases i.e dp[k] -> dp[n] = 1;
+        // dp[k-1] -> dp[0] =  (dp[i + 1] + dp[i+2] ... dp[i+mx]) / maxPts 
        for(int i = k-2;i>=0;i--){
            // dp[i] = dp[i+1] + .... dp[i + mx]
            // dp[i+1] = dp[i+2] .... dp[i + mx + 1]
