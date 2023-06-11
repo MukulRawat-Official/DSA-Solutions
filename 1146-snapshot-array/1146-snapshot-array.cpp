@@ -1,6 +1,6 @@
 class SnapshotArray {
 public:
-    map<int,int>upd;
+    unordered_map<int,int>upd;
     vector<map<int,int>>arr;
     int n;
     int ctr = 0;
