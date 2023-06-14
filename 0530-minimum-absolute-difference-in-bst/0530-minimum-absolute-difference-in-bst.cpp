@@ -11,20 +11,20 @@
  */
 class Solution {
 public:
-    int prv = -1;
-    int dfs(TreeNode* root)
+    int dfs(TreeNode* root , int& prv)
     {
        if(!root) return 1e6;
        
        int ans = 1e6;
-       ans = dfs(root->left);
+       ans = dfs(root->left , prv);
         if(prv != -1)
        ans = min(ans , abs(root->val  - prv));
        prv = root->val;
-       ans = min(ans,dfs(root->right));  
+       ans = min(ans,dfs(root->right , prv));  
        return ans;
     }
     int getMinimumDifference(TreeNode* root) {
-        return dfs(root);
+        int prv = -1;
+        return dfs(root , prv);
     }
 };
