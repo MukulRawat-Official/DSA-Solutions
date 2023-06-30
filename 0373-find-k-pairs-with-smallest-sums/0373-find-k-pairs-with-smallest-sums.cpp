@@ -1,34 +1,25 @@
 class Solution {
 public:
-vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
-vector<vector<int>> ans;
-priority_queue<pair<int, pair<int, int>>> pq; // max-heap to store the k smallest pairs
-    for (int i = 0; i < nums1.size(); i++) {
-        for (int j = 0; j < nums2.size(); j++) {
-            int sum = nums1[i] + nums2[j];
-
-            // If the priority queue size is less than k, add the pair
-            if (pq.size() < k)
-                pq.push({sum, {nums1[i], nums2[j]}});
-            else if (sum < pq.top().first) {
-                // If the current sum is smaller than the largest sum in the priority queue,
-                // remove the largest sum and add the current sum
-                pq.pop();
-                pq.push({sum, {nums1[i], nums2[j]}});
-            } else if (sum > pq.top().first) {
-                // If the current sum is larger than the largest sum in the priority queue,
-                // break the inner loop since sums will only increase from this point onwards
-                break;
-            }
+    typedef long long ll;
+    vector<vector<int>> kSmallestPairs(vector<int>& a, vector<int>& b, int k) {
+        int n = a.size() , m = b.size(); 
+        vector<int>bidx(m,0);
+        priority_queue<vector<int>>pq;
+        for(int i = 0;i<n;i++){
+            pq.push({-a[i] - b[0] , i , 0});
         }
+        
+        vector<vector<int>>ans;
+        while(pq.size() && k > 0){
+           auto tmp = pq.top(); pq.pop();
+           ans.push_back({a[tmp[1]] , b[tmp[2]]});
+           if(tmp[2] + 1 < m){
+               tmp[2]++;
+               pq.push({-a[tmp[1]] - b[tmp[2]] , tmp[1] , tmp[2]});
+           }
+           k--;
+        }
+        
+        return ans;
     }
-
-    // Retrieve the k smallest pairs from the priority queue and store them in the answer vector
-    while (!pq.empty()) {
-        ans.push_back({pq.top().second.first, pq.top().second.second});
-        pq.pop();
-    }
-
-    return ans;
-}
 };
