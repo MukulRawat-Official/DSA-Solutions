@@ -6,8 +6,8 @@ public:
         sort(b.begin() , b.end());
         int n = a.size();
         int m = b.size();
-        // for(int i = 0;i<n;i++) for(int j = 0;j<m;j++) dp[i][j][0] = dp[i][j][1] = -1;
-        memset(dp,-1,sizeof(dp));
+        for(int i = 0;i<n;i++) for(int j = 0;j<=m;j++) dp[i][j][0] =-1 ,  dp[i][j][1] = -1;
+
         function<int(int,int,int)> recurr = [&](int i , int j , int t){
            if(i == n) return 0;
            int& ans = dp[i][j][t]; if(ans != -1) return ans; ans = 1e4;
