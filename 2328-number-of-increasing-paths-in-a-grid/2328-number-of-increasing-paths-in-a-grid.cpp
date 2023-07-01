@@ -1,48 +1,30 @@
 class Solution {
 public:
-
-        int mod = 1000000007;
-        int dr[4] = {1,0,-1,0};
-        int dc[4] = {0,1,0,-1};
-
-    bool isValid(int i,int j,vector<vector<int>>& grid){
-
-        if(i<0 || i>= grid.size() || j<0 || j>= grid[0].size())
-         return false;
-
-        return true; 
-    } 
-
-    int dfs(int r,int c,vector<vector<int>>& grid,vector<vector<int>>& dp){
-
-        if(dp[r][c] != -1)
-         return dp[r][c];
-
-
-        int ans = 1;
-
-        for(int i=0;i<4;i++){
-
-            int nr = r + dr[i];
-            int nc = c + dc[i];
-
-            if(isValid(nr,nc,grid) && grid[nr][nc] > grid[r][c]){
-                ans = (ans%mod + dfs(nr,nc,grid,dp)%mod)%mod;
-            }
-        }
-
-        return dp[r][c]=ans;
-    } 
-
-    int countPaths(vector<vector<int>>& grid) {
+    vector<int>l = {0,1,0,-1} , r = {1,0,-1,0};
+    int mod = 1e9 + 7;
+    int countPaths(vector<vector<int>>& arr) {
+        int n = arr.size() , m = arr[0].size();
+        vector<vector<int>>dp(n,vector<int>(m,-1));
         
-         vector<vector<int>> dp(grid.size(),vector<int>(grid[0].size(),-1));
-         long long cnt = 0;
-
-         for(int i=0;i<grid.size();i++)
-           for(int j=0;j<grid[0].size();j++)
-             cnt = (cnt%mod + dfs(i,j,grid,dp)%mod)%mod;
-
-        return (int)cnt%mod;     
+        function<int(int,int)> recurr = [&](int i , int j){   
+           int& ans = dp[i][j]; if(ans != -1) return ans; 
+           ans = 1;
+           for(int k = 0;k<4;k++){
+               int x = i + l[k];
+               int y = j + r[k];
+               
+               if( min(x,y) < 0 || x == n || y == m || arr[i][j] >= arr[x][y]) continue;
+               
+               ans = (ans + recurr(x,y)) % mod;
+           }
+           return ans;
+        };
+        
+        int ans = 0;
+        
+        for(int i = 0;i<n;i++) for(int j =0;j<m;j++) ans = (ans + recurr(i,j)) % mod;
+        
+        return ans;
     }
+    
 };
