@@ -37,7 +37,7 @@ public:
                else {
                    bool hv = 1;
                    if(isupper(arr[x][y])) hv = (1<<(arr[x][y] - 'A')) & key;
-                   if(hv &&   (vis[x][y][key] > vis[xx][yy][key] + 1) ) {
+                   if(hv &&   vis[x][y][key] > vis[xx][yy][key] + 1)  {
                        vis[x][y][key] = vis[xx][yy][key] + 1;
                        q.push({x * m + y, key});
                    }
