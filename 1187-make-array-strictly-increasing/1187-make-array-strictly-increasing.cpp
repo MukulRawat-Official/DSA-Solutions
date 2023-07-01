@@ -1,35 +1,26 @@
+int dp[2002][2002][2];
 class Solution {
-private:
-    int helper(int idx, int prev, vector<int> &arr1, vector<int> &arr2, map<pair<int, int>, int> &dp) {
-        //Base case
-        if(idx == arr1.size()) {
-            return 0;
-        }
-
-        //Explore all paths;
-        if(dp.find({idx, prev}) != dp.end()) {
-            return dp[{idx, prev}];
-        }
-        int replace = 1e9, not_replace = 1e9;
-
-        //Replace
-        int i = upper_bound(arr2.begin(), arr2.end(), prev) - arr2.begin();
-        if(i < arr2.size()) {
-            replace = 1 + helper(idx + 1, arr2[i], arr1, arr2, dp);            
-        }
-
-        //Not replace
-        if(arr1[idx] > prev) {
-            not_replace = helper(idx + 1, arr1[idx], arr1, arr2, dp);
-        }
-
-        return dp[{idx, prev}] = min(replace, not_replace);
-    }
 public:
-    int makeArrayIncreasing(vector<int>& arr1, vector<int>& arr2) {
-        map<pair<int, int>, int> dp;
-        sort(arr2.begin(), arr2.end());
-        int res = helper(0, -1, arr1, arr2, dp);
-        return res >= 1e9 ? -1 : res;
+    int makeArrayIncreasing(vector<int>& a, vector<int>& b) {
+        a.insert(a.begin(), -1);
+        sort(b.begin() , b.end());
+        int n = a.size();
+        int m = b.size();
+        // for(int i = 0;i<n;i++) for(int j = 0;j<m;j++) dp[i][j][0] = dp[i][j][1] = -1;
+        memset(dp,-1,sizeof(dp));
+        function<int(int,int,int)> recurr = [&](int i , int j , int t){
+           if(i == n) return 0;
+           int& ans = dp[i][j][t]; if(ans != -1) return ans; ans = 1e4;
+           
+           int prv = t ? a[i-1] : b[j-1];
+           if(a[i] > prv)     ans = recurr(i+1,j,1);
+           int id = lower_bound(b.begin() + j , b.end() , prv + 1) - b.begin();
+           if(id != m)    ans = min(ans , recurr(i+1,id + 1 , 0) + 1);
+           return ans;
+        };
+        
+        int ans = recurr(1,0,1);
+        return ans >= 1e4 ? -1 : ans;
+        
     }
 };
