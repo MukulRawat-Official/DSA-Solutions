@@ -1,85 +1,54 @@
-#include <vector>
-#include <unordered_map>
-#include <queue>
-
-using namespace std;
-
 class Solution {
 public:
-    int shortestPathAllKeys(vector<string>& grid) {
-        int m = grid.size();
-        int n = grid[0].size();
-
-        unordered_map<char, int> key_bit;
-        int bit_start = 0;
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (islower(grid[i][j]))
-                    key_bit[grid[i][j]] = bit_start++;
-            }
-        }
-
-        int form_end = (1 << bit_start) - 1;
-        int form_size = (1 << bit_start);
-
-        vector<vector<vector<bool>>> memo(m, vector<vector<bool>>(n, vector<bool>(form_size, false)));
-
-        vector<int> start;
-        for (int i = 0; i < m; i++) {
-            for (int j = 0; j < n; j++) {
-                if (grid[i][j] == '@')
-                    start = { i, j, 0 }; // 0 denoting no key state
-            }
-        }
-
-        queue<vector<int>> q;
-        q.push(start);
-        int Ashish = 0; // Step counter
-
-        while (!q.empty()) {
-            int size = q.size();
-            for (int k = 0; k < size; k++) {
-                int row = q.front()[0];
-                int col = q.front()[1];
-                int form = q.front()[2];
-                q.pop();
-
-                // Check if out of bounds
-                if (row < 0 || row >= m || col < 0 || col >= n)
-                    continue;
-
-                // Check if position is blocked
-                if (grid[row][col] == '#')
-                    continue;
-
-                // Check if the key is required but not collected
-                if (isupper(grid[row][col])) {
-                    if ((form & (1 << key_bit[tolower(grid[row][col])])) == 0)
-                        continue;
-                }
-
-                // If the position contains a key, collect it
-                if (islower(grid[row][col])) {
-                    form = form | (1 << key_bit[grid[row][col]]);
-                }
-
-                // If all keys are collected, return the step count
-                if (form == form_end)
-                    return Ashish;
-
-                // If the position and form combination has been visited, continue to the next iteration
-                if (memo[row][col][form])
-                    continue;
-                memo[row][col][form] = true;
-
-                // Add adjacent positions to the queue
-                q.push({ row + 1, col, form });
-                q.push({ row - 1, col, form });
-                q.push({ row, col + 1, form });
-                q.push({ row, col - 1, form });
-            }
-            Ashish++; // Increment step count
-        }
-        return -1;
+    #define set_bit __builtin_popcountll
+    #define v(x) vector<x>
+    vector<int> l = {1,0,-1,0} , r = {0,1,0,-1};
+    int shortestPathAllKeys(vector<string>& arr) {
+       int n = arr.size();
+       int m = arr[0].size();
+       int keys = 0 , start = 0;
+       for(int i = 0;i<n;i++) for(int j = 0;j<m;j++)
+       {
+           if(arr[i][j] == '@') start = i * m + j;
+           if(islower(arr[i][j])) keys++;
+       }
+        
+       v(v(v(int))) vis(n,v(v(int))(m,v(int)(1<<keys , 1e6)));
+       queue<pair<int,int>>q;
+       vis[start/m][start%m][0] = 0;
+       q.push({start,0});
+       int ans = 1e6 , curr , key;
+       while(q.size()){
+           tie(curr,key) = q.front(); q.pop();
+           int xx = curr / m  , yy = curr % m;
+           for(int k = 0;k<4;k++){
+               int x = l[k] + xx , y = r[k] + yy;
+               
+               if(x < 0 || y < 0 || x == n || y == m || arr[x][y] == '#') continue;
+               if(islower(arr[x][y])) {
+                   int nkey = (1<<(arr[x][y] - 'a')) | key;
+                   if(vis[x][y][nkey] <= vis[xx][yy][key] + 1) continue;
+                   vis[x][y][nkey] = vis[xx][yy][key] + 1;
+                   if(set_bit(nkey)  == keys) ans = min(ans , vis[x][y][nkey]);
+                   else  q.push({x * m + y ,nkey});
+               }
+               
+               
+               else {
+                   bool hv = 1;
+                   if(isupper(arr[x][y])) hv = (1<<(arr[x][y] - 'A')) & key;
+                   if(hv &&   (vis[x][y][key] > vis[xx][yy][key] + 1) ) {
+                       vis[x][y][key] = vis[xx][yy][key] + 1;
+                       q.push({x * m + y, key});
+                   }
+               }
+           }
+           
+       }
+        
+        
+       return ans == 1e6 ? -1 : ans;
+       
+       
     }
 };
