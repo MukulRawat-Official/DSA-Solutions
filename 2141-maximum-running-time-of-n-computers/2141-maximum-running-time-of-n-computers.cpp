@@ -5,8 +5,7 @@ public:
         long long low = 0 , high = 1;
         for(auto& x : arr) high += x;
         auto chk = [&](ll mid)->bool{
-           ll ctr = n * mid;  
-           ll l = 0 , h = arr.size() - 1;
+           ll ctr = n * mid; 
            for(auto& x : arr) ctr -= min(mid , 1ll * x);
            return ctr<1;
         };
