@@ -26,7 +26,6 @@ public:
         ll ans = 0 , ans2 = 0;
         mp[0]++;
         for(auto& [x,f] : mp){
-           // cout<<f<<" ";
            ans += 1ll * f * (f - 1) / 2;
            for(int i = 0;i<26;i++){
                ll curr = x ^ (1<<i);
