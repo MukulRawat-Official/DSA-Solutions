@@ -10,7 +10,7 @@ public:
         }
         
         ll m = 0;
-        map<ll,ll>mp;  
+        unordered_map<ll,ll>mp;  
         auto dfs = [&](int curr , ll& mask, auto&& dfs)->void{
              
              for(auto&x : adj[curr]){
