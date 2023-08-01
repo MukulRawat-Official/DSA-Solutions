@@ -1,3 +1,4 @@
+long dp[41][ (int)(1<<10)];
 class Solution {
 public:
    
@@ -5,8 +6,7 @@ public:
         int n = arr.size();
         
         int mx  = (1<<n) - 1;
-        vector<long> dp[41];
-        for(int i = 0;i<41;i++) dp[i] = vector<long>(mx+1,-1);
+        for(int i = 0;i<41;i++) for(auto& x : dp[i]) x = -1;
         int mod = 1e9 + 7;
         
     
