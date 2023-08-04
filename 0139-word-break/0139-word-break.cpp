@@ -18,16 +18,6 @@ public:
            
             head->last = true;
         }
-        
-        bool chk(string& s){
-            Trie* head = this;
-            for(auto& x : s){
-                int idx = x - 'a';
-                if(head->arr[idx]) head->arr[idx] = new Trie();
-                head = head->arr[idx];
-            }
-            return head->last;
-        }
     };
     bool wordBreak(string s, vector<string>& wordDict) {
         int n = s.size();
