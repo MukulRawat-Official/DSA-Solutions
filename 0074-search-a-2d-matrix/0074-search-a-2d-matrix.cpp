@@ -7,8 +7,7 @@ public:
         
         while(h - l > 1){
             int mid = (h + l) >> 1;
-            int r = mid / m , c = mid % m;
-            if(arr[r][c] <= target) l = mid;
+            if(arr[mid/m][mid%m] <= target) l = mid;
             else h = mid;
         }
         
