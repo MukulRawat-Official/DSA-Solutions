@@ -1,37 +1,22 @@
-#define nums arr
 class Solution {
 public:
-    int search(vector<int>& nums, int target) {
-        int low = 0 , high  = nums.size()-1;
+    int search(vector<int>& arr, int target) {
+        int n =  arr.size();
+        int l = -1 , h = n;
         
-        while(low<=high)
-        {
-           int mid = low + (high - low) / 2;
-           
-            
-            if(arr[mid] == target)
-                return mid;
-            
-             else  if(arr[mid] >= arr[low])
-            {
-                if(arr[low] <= target && arr[mid] > target)
-                    high = mid-1;
-                 
-                 else
-                     low = mid+1;
+        while(h - l > 1){
+            int mid = (h + l) >> 1;
+            if(arr[mid] >= arr[0]){
+                if(arr[0] > target || arr[mid] <= target) l = mid;
+                else  h = mid;
             }
-            
-            else
-            {
-                  if(arr[mid] <  target && arr[high] >= target)
-                      low = mid+1;
-                
-                  else
-                      high = mid-1;
-                      
+            else {
+                if(arr[0] <= target || arr[mid] > target) h = mid;
+                else l = mid;
             }
         }
         
-        return -1;
+        
+        return (l != -1  && arr[l] == target ? l  : -1);
     }
 };
