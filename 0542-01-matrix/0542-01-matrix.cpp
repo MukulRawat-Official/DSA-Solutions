@@ -18,7 +18,7 @@ public:
                 int i = x + l[k];
                 int j = y + r[k];
                 
-                if(i < 0 || j < 0 || i ==n || j == m || ans[i][j] <= ans[x][y] + mat[i][j])
+                if(i < 0 || j < 0 || i ==n || j == m || ans[i][j] != n * m + 1)
                     continue;
                 ans[i][j] = ans[x][y] + mat[i][j];
                 q.push(i * m + j);
