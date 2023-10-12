@@ -1,44 +1,51 @@
-int manhattan_distance(vector<int>& p1, vector<int>& p2) {
-    return abs(p1[0] - p2[0]) + abs(p1[1] - p2[1]);
-}
-
 class Solution {
 public:
-    int minCostConnectPoints(vector<vector<int>>& points) {
-        int n = points.size();
-        vector<bool> visited(n, false);
-        unordered_map<int, int> heap_dict;
-        for(int i = 0; i < n; ++i) {
-            heap_dict[i] = INT_MAX; // Initialize all distances to infinity
-        }
-        heap_dict[0] = 0; // Start node
+    vector<int>par;
+    int comp;
+    int find(int a){
+        if(par[a] == a) return a;
+        return par[a] = find(par[a]);
+    }
+    
+    int join(int a, int b){
+        a = find(a);
+        b = find(b);
         
-        auto cmp = [](pair<int, int> left, pair<int, int> right) { return left.first > right.first; };
-        priority_queue<pair<int, int>, vector<pair<int, int>>, decltype(cmp)> min_heap(cmp);
-        min_heap.push({0, 0});
-        
-        int mst_weight = 0;
-        
-        while (!min_heap.empty()) {
-            auto [w, u] = min_heap.top();
-            min_heap.pop();
-            
-            if (visited[u] || heap_dict[u] < w) continue;
-            
-            visited[u] = true;
-            mst_weight += w;
-            
-            for (int v = 0; v < n; ++v) {
-                if (!visited[v]) {
-                    int new_distance = manhattan_distance(points[u], points[v]);
-                    if (new_distance < heap_dict[v]) {
-                        heap_dict[v] = new_distance;
-                        min_heap.push({new_distance, v});
-                    }
-                }
+        if(a == b) return 0;
+        par[a] = b;
+        --comp;
+        return 1;
+    }
+    int minCostConnectPoints(vector<vector<int>>& arr) {
+        int ans = 0 , n = arr.size();
+        par.resize(n,0);
+        iota(par.begin(),par.end(),0);
+        priority_queue<vector<int>>pq;
+        vector<int>tmp(3,0);
+        comp = n;
+        for(int i = 0;i<n;i++){
+            for(int j = i+1;j<n;j++){
+                tmp[0] = abs(arr[i][0] - arr[j][0])  +  abs(arr[i][1] - arr[j][1]);
+                tmp[0] = -tmp[0];
+                tmp[1] = i;
+                tmp[2] = j;                                    
+                pq.push(tmp);                                                             
             }
         }
         
-        return mst_weight;
+     
+        while(pq.size() && comp > 1)
+        {
+           auto arr = pq.top(); pq.pop();
+           if(join(arr[1] , arr[2])){
+               // cout<<arr[0]<<" ";
+               ans -= arr[0]; 
+           }
+        }
+        
+        
+        
+        return ans;
+        
     }
 };
