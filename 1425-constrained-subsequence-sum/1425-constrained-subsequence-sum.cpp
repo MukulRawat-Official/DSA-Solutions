@@ -13,7 +13,7 @@ public:
            ans = max(ans,curr);
             
            while(dq.size() && dq.back().first <= curr) dq.pop_back();
-           if(curr >= 0) dq.push_back({curr,j});
+           if(curr > 0) dq.push_back({curr,j});
         }
         
         return ans;
