@@ -10,7 +10,7 @@ public:
             ll curr = arr[j];
             if(pq.size()) curr += pq.top().first;
             ans = max(ans,curr);
-            if(curr >= 0) pq.push({curr,j});
+            if(curr > 0) pq.push({curr,j});
         }
         
         return ans;
