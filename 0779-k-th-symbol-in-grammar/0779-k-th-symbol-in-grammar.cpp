@@ -3,7 +3,7 @@ public:
     int cnt = 0 , ans = -1 , k;
     void recurr(int i , int n , int tot ,  int curr){
         if(i == n){
-            if(k == 1)    ans = curr;
+            ans = curr;
             return;
         }
           
