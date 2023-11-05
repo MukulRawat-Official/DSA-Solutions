@@ -107,7 +107,7 @@ struct Lsegtree {
   }
 };
 
-Lsegtree<ll,ll> st(1e5 + 1,0,0);
+
 class Solution {
 public:
     
@@ -135,8 +135,7 @@ public:
         map<ll,ll>mp;
         for(int i = 0;i<n;i++) mp[pos[i]] = i;
         
-        for(auto& x : st.st) x = 0;
-        for(auto& x : st.lazy) x = 0;
+        Lsegtree<ll,ll> st(n,0,0);
            
         
       
