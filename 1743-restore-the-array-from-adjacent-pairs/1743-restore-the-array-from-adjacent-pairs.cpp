@@ -2,8 +2,8 @@ class Solution {
 public:
     vector<int> restoreArray(vector<vector<int>>& adjacentPairs) {
         int n = adjacentPairs.size() + 1;
-        map<int,vector<int>>adj;
-        map<int,int>inc;
+        unordered_map<int,vector<int>>adj;
+        unordered_map<int,int>inc;
         vector<int> ans;
         
         for(auto& x : adjacentPairs){
@@ -13,10 +13,6 @@ public:
             inc[u]++;
             inc[v]++;
         }
-        
-        
-        
-        
         
         
         function<void(int,int)> dfs = [&](int curr , int prv){
