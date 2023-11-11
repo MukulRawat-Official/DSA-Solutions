@@ -1,39 +1,39 @@
 class Graph {
 public:
     typedef long long ll;
-    ll adj[100][100] , need , n; 
+    vector<vector<pair<ll,ll>>>adj;
+    vector<int>vis;
+    ll val , node;
     Graph(int n, vector<vector<int>>& edges) {
-        
-        for(int i = 0;i<n;i++) 
-            for(int j = 0;j<n;j++) 
-                if(i == j)adj[i][i] = 0;
-                else adj[i][j] = 1e9;
-        
-        for(auto& x : edges) adj[x[0]][x[1]] = x[2];
-        this->n = n;
-        need = 1;
+        adj.resize(n);
+        vis.resize(n);
+        for(auto& x : edges) adj[x[0]].push_back({x[1] , x[2]});
+   
     }
     
     void addEdge(vector<int> x) {
-        adj[x[0]][x[1]] = x[2];
-        need = 1;
+        adj[x[0]].push_back({x[1],x[2]});
     }
     
     int shortestPath(int node1, int node2) {
-        if(!need) return (adj[node1][node2] >= 1e9 ? -1 : adj[node1][node2]);
+        if(node1 == node2) return 0;
+        for(auto& x : vis) x = 0;
+        priority_queue<pair<ll,ll>>pq;
+        pq.push({-1,node1});
         
-        for(int m = 0;m<n;m++){
-            for(int i = 0;i<n;i++){
-                if(m == i) continue;
-                for(int j = 0;j<n;j++){
-                    if(i == j || m == j) continue;
-                    adj[i][j] = min(adj[i][m] + adj[m][j]  , adj[i][j]);
-                }
+        
+        while(pq.size()){
+            tie(val , node) = pq.top(); pq.pop();
+            if(vis[node]) continue;
+            vis[node] =  -val;
+            for(auto& [x,w]: adj[node]){
+                if(vis[x]) continue;
+                pq.push({val - w ,  x});
             }
         }
-        need = 0;
         
-        return (adj[node1][node2] >= 1e9 ? -1 : adj[node1][node2]); 
+        return vis[node2] ? vis[node2] - 1 : -1;
+        
     }
 };
 
