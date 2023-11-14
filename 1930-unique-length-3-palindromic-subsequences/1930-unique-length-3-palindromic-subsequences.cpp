@@ -5,7 +5,7 @@ public:
         vector<int>left(26,0) , right(26,0);
         long long ans = 0;
         left[s[0] - 'a']++;
-        vector<set<char>>cnt(26);
+        vector<unordered_set<char>>cnt(26);
         for(int i = 1;i<n;i++) right[s[i] - 'a']++;
         for(int i = 1;i<n;i++) {
            right[s[i] - 'a']--;
