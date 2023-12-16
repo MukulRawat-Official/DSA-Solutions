@@ -3,7 +3,7 @@ public:
     
     vector<long long>hash , poly;
     const int mod = 1e9 + 7;
-    const long long p = 28;
+    const long long p = 30;
     typedef long long ll;
     ll expo(ll a, ll b){
         ll ans = 1;
