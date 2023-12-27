@@ -5,7 +5,8 @@ public:
          int n = arr.size() , sum = 0;
           
          for(int i = 0;i<n; ){
-             int curr = i , val = arr[i];
+             int curr = i+1 , val = arr[i];
+             sum += arr[i];
              vector<int>tmp;
              
              while(curr < n && colors[i] == colors[curr]) { 
