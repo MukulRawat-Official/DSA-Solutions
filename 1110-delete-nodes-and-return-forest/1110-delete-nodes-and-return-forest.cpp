@@ -19,9 +19,10 @@ public:
         
         if(!todlt[root->val])    
         {
+           if(chk) ans.push_back(root);
            root->left = recurr(root->left,0);
            root->right = recurr(root->right,0);
-           if(chk) ans.push_back(root);
+           
            return root;
         }            
         
