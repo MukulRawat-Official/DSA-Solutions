@@ -17,34 +17,16 @@ public:
     TreeNode* recurr(TreeNode* root , int chk){
         if(!root) return NULL;
         
-        if(chk){
-            if(!todlt[root->val])    
-            {
-                root->left = recurr(root->left,0);
-                root->right = recurr(root->right,0);
-                ans.push_back(root);
-                return root;
-            }
-            
-            recurr(root->left , 1);
-            recurr(root->right , 1);
-            return NULL;
-        }
-        else
+        if(!todlt[root->val])    
         {
-            if(!todlt[root->val])    
-            {
-                root->left = recurr(root->left,0);
-                root->right = recurr(root->right,0);
-                return root;
-            }
-            else {
-             recurr(root->left , 1);
-             recurr(root->right , 1);
-             return NULL;
-            }
-        }
+           root->left = recurr(root->left,0);
+           root->right = recurr(root->right,0);
+           if(chk) ans.push_back(root);
+           return root;
+        }            
         
+        recurr(root->left , 1);
+        recurr(root->right , 1);
         return NULL;
     }
     
