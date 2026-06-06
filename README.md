@@ -9,4 +9,12 @@ A collection of LeetCode questions to ace the coding interview! - Created using 
 |  |
 | ------- |
 | [2574-left-and-right-sum-differences](https://github.com/MukulRawat-Official/DSA-Solutions/tree/master/2574-left-and-right-sum-differences) |
+## Math
+|  |
+| ------- |
+| [3753-total-waviness-of-numbers-in-range-ii](https://github.com/MukulRawat-Official/DSA-Solutions/tree/master/3753-total-waviness-of-numbers-in-range-ii) |
+## Dynamic Programming
+|  |
+| ------- |
+| [3753-total-waviness-of-numbers-in-range-ii](https://github.com/MukulRawat-Official/DSA-Solutions/tree/master/3753-total-waviness-of-numbers-in-range-ii) |
 <!---LeetCode Topics End-->
